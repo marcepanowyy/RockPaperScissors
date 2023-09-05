@@ -1,12 +1,18 @@
 package org.example.elements;
 
-public class Rock extends MapElement implements IElement{
+import org.example.enums.ElementEnum;
 
-    // abstract class
+public class Rock extends AbstractMapElement implements IElement{
+
+    private final ElementEnum symbol = ElementEnum.ROCK;
+
+    // abstract
 
     public Rock(int x, int y){
         super(x, y);
     }
+
+    // end abstract
 
     // interface
 
@@ -15,6 +21,12 @@ public class Rock extends MapElement implements IElement{
 
     }
 
+    // end interface
+
+    @Override
+    public String toString() {
+        return "R";
+    }
 
 
 }

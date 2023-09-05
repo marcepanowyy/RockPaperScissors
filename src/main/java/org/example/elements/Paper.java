@@ -1,13 +1,16 @@
 package org.example.elements;
 
-public class Paper extends MapElement implements IElement {
+import org.example.enums.ElementEnum;
 
-    // abstract class
+public class Paper extends AbstractMapElement implements IElement {
+
+    // abstract
 
     public Paper(int x, int y){
         super(x, y);
     }
 
+    // end abstract
 
     // interface
 
@@ -16,5 +19,11 @@ public class Paper extends MapElement implements IElement {
 
     }
 
+    // end interface
+
+    @Override
+    public String toString() {
+        return "P";
+    }
 
 }

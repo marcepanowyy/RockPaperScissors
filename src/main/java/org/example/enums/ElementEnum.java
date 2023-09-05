@@ -1,4 +1,4 @@
-package org.example.elements;
+package org.example.enums;
 
 public enum ElementEnum {
 

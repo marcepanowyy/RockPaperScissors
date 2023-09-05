@@ -1,12 +1,18 @@
 package org.example.elements;
 
-public class Scissors extends MapElement implements IElement{
+import org.example.enums.ElementEnum;
 
-    // abstract class
+public class Scissors extends AbstractMapElement implements IElement{
+
+    private final ElementEnum symbol = ElementEnum.SCISSORS;
+
+    // abstract
 
     public Scissors(int x, int y){
         super(x, y);
     }
+
+    // end abstract
 
 
     // interface
@@ -16,6 +22,12 @@ public class Scissors extends MapElement implements IElement{
 
     }
 
+    // end interface
+
+    @Override
+    public String toString() {
+        return "S";
+    }
 
 
 }
