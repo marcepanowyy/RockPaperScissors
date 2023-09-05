@@ -1,13 +1,14 @@
 package org.example;
 
+import org.example.elements.Paper;
+import org.example.factory.PaperFactory;
+
 public class Main {
     public static void main(String[] args) {
 
-        System.out.printf("Hello and welcome!");
+        PaperFactory paperFactory = new PaperFactory();
+        Paper paper1 = paperFactory.createElement(1, 1);
+        System.out.println(paper1.getPosition());
 
-        for (int i = 1; i <= 5; i++) {
-
-            System.out.println("i = " + i);
-        }
     }
 }
