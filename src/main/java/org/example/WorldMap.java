@@ -1,19 +1,16 @@
 package org.example;
 
 import org.example.elements.Element;
-import org.example.elements.IMapElement;
+import org.example.utils.ElementDistancePair;
 import org.example.utils.Vector2D;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorldMap {
 
     private final int width;
     private final int height;
-    private final Map<Vector2D, List<Element>> map = new HashMap<>();
+    private final ArrayList<Element> elements = new ArrayList<>();
 
     public WorldMap(int width, int height) {
         this.width = width;
@@ -26,67 +23,70 @@ public class WorldMap {
 
         if (isWithinBounds(position)) {
 
-            List<Element> elementsAtPosition = map.computeIfAbsent(position, k -> new ArrayList<>());
-            elementsAtPosition.add(element);
+            elements.add(element);
 
         } else {
             throw new IllegalArgumentException("Element position is out of bounds");
         }
+
     }
 
     public void removeElement(Element element) {
-
-            Vector2D position = element.getPosition();
-            List<Element> elementsAtPosition = map.get(position);
-
-            if (elementsAtPosition != null) {
-                elementsAtPosition.remove(element);
-                if (elementsAtPosition.isEmpty()) {
-                    map.remove(position);
-                }
-            }
-        }
+        elements.remove(element);
     }
 
     public void draw() {
 
+        String[][] mapArray = new String[height][width];
+
+        for (int i = 0; i < height; i++) {
+            Arrays.fill(mapArray[i], " ");
+        }
+
+        for (Element element : elements) {
+            Vector2D position = element.getPosition();
+            int x = (int) position.getX();
+            int y = (int) position.getY();
+
+            mapArray[y][x] = element.toString();
+        }
+
         for (int i = height - 1; i >= 0; i--) {
-
             System.out.println();
-
             for (int j = 0; j < width; j++) {
-
-                Vector2D position = new Vector2D(j, i);
-                List<Element> elementsAtPosition = map.get(position);
-                String symbol;
-
-                if (elementsAtPosition != null && !elementsAtPosition.isEmpty()) {
-
-                    Element firstElement = elementsAtPosition.get(0);
-                    symbol = firstElement.toString();
-
-                } else {
-                    symbol = " ";
-                }
-                System.out.print("[" + symbol + "] ");
+                System.out.print("[" + mapArray[i][j] + "] ");
             }
         }
 
         System.out.println();
-
     }
 
     private boolean isWithinBounds(Vector2D position) {
         return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
     }
 
-
     // find the nearest element different from itself
-    public Element findCompanion(Element mapElement) {
 
-    return null;
+    public ElementDistancePair findCompanion(Element sourceElement) {
+
+        Element closestCompanion = null;
+        double shortestDistance = Double.MAX_VALUE;
+
+        for (Element element : elements) {
+
+            if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) {
+                continue;
+            }
+
+            double distance = sourceElement.calculateDistanceToCompanion(element);
+
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closestCompanion = element;
+            }
+        }
+        return new ElementDistancePair(closestCompanion, shortestDistance);
     }
 
 
 }
-

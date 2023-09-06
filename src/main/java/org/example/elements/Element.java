@@ -9,7 +9,6 @@ public class Element {
     private Vector2D position;
     private final WorldMap worldMap;
     private final ElementEnum symbol;
-    private Element companion = null;
 
     public Element(WorldMap worldMap, ElementEnum symbol, int x, int y) {
         this.position = new Vector2D(x, y);
@@ -26,10 +25,13 @@ public class Element {
         return position;
     }
 
-    public double calculateDistanceToCompanion(Element mapElement) {
+    public ElementEnum getSymbol(){
+        return this.symbol;
+    }
 
+    public double calculateDistanceToCompanion(Element companion) {
         Vector2D position1 = this.getPosition();
-        Vector2D position2 = mapElement.getPosition();
+        Vector2D position2 = companion.getPosition();
 
         double deltaX = position2.getX() - position1.getX();
         double deltaY = position2.getY() - position1.getY();
