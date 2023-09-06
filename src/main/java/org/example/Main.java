@@ -38,7 +38,6 @@ public class Main {
         map.updateElements();
         map.draw();
         map.updateElements();
-
-
+        map.draw();
     }
 }

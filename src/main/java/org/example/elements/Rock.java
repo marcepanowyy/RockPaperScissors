@@ -9,4 +9,8 @@ public class Rock extends Element {
         super(worldMap, ElementEnum.ROCK, x, y);
     }
 
+    @Override
+    public void battle(Element opponent) {
+
+    }
 }

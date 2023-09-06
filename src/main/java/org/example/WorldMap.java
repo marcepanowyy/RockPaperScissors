@@ -141,7 +141,11 @@ public class WorldMap {
 
                 // add battle logic
                 System.out.println("battle");
+
+
             }
+
+
         }
     }
 

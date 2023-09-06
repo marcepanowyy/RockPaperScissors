@@ -4,7 +4,7 @@ import org.example.WorldMap;
 import org.example.enums.ElementEnum;
 import org.example.utils.Vector2D;
 
-public class Element {
+public abstract class Element {
 
     private Vector2D position;
     private final WorldMap worldMap;
@@ -26,6 +26,9 @@ public class Element {
 
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
+
+    public abstract void battle(Element opponent);
+
     @Override
     public String toString() {
         return this.symbol.toString().substring(0, 1);

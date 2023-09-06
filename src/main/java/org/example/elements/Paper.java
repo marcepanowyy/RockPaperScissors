@@ -9,4 +9,8 @@ public class Paper extends Element {
         super(worldMap, ElementEnum.PAPER, x, y);
     }
 
+    @Override
+    public void battle(Element opponent) {
+
+    }
 }

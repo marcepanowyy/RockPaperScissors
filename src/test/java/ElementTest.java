@@ -1,16 +1,24 @@
 import org.example.WorldMap;
 import org.example.WorldMapBuilder;
-import org.example.elements.Element;
-import org.example.enums.ElementEnum;
+import org.example.elements.Paper;
+import org.example.elements.Rock;
+import org.example.elements.Scissors;
+import org.example.factory.PaperFactory;
+import org.example.factory.RockFactory;
+import org.example.factory.ScissorsFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ElementTest {
 
-    private static WorldMap worldMap;
-    private static Element rock;
-    private static Element paper;
+    static WorldMap worldMap;
+    static RockFactory rockFactory;
+    static PaperFactory paperFactory;
+    static ScissorsFactory scissorsFactory;
+    private static Rock rock;
+    private static Paper paper;
+    private static Scissors scissors;
 
     @BeforeAll
     public static void setUpBeforeAll(){
@@ -23,8 +31,13 @@ public class ElementTest {
                 .build();
 
 
-        rock = new Element(worldMap, ElementEnum.ROCK, 0, 0);
-        paper = new Element(worldMap, ElementEnum.PAPER, 3, 4);
+        rockFactory = new RockFactory();
+        paperFactory = new PaperFactory();
+        scissorsFactory = new ScissorsFactory();
+
+        rock = rockFactory.createElement(worldMap, 0, 0);
+        paper = paperFactory.createElement(worldMap, 3, 4);
+
     }
 
     @Test

@@ -8,4 +8,8 @@ public class Scissors extends Element {
         super(worldMap, ElementEnum.SCISSORS, x, y);
     }
 
+    @Override
+    public void battle(Element opponent) {
+
+    }
 }
