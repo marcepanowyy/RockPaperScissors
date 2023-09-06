@@ -9,11 +9,11 @@ public class Rock extends Element {
     }
 
     @Override
-    public void battle(Element opponent) {
+    public boolean battle(Element opponent) {
         if (opponent instanceof Scissors) {
-            System.out.println("Rock wins against Scissors!");
+            return true;
         } else if (opponent instanceof Paper) {
-            System.out.println("Paper wins against Rock!");
+            return false;
         } else if (opponent instanceof Rock) {
             throw new IllegalArgumentException("Invalid battle: Rock cannot battle against another Rock!");
         } else {

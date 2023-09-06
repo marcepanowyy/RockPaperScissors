@@ -1,5 +1,6 @@
 package org.example;
 import org.example.elements.Element;
+import org.example.enums.ElementEnum;
 import org.example.utils.Vector2D;
 import java.util.*;
 
@@ -8,7 +9,7 @@ public class WorldMap {
     private final int height;
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
-    private final double movementDistance; // update distance should be smaller than battleRange
+    private final double movementDistance; // movement distance should be smaller than battleRange
     private final double battleRange;
     public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
@@ -21,9 +22,9 @@ public class WorldMap {
     }
 
     public void performRound(){
-        checkForBattles();
-        findOpponents(); // find opponents again, after the battle, the opponents of all elements can change.
-        updateElements();
+        checkForBattles(); // check for battles and handle them
+//        updateOpponents(); // if element's opponent is not in 'elements', that means it should be changed (updated)
+        updateElements(); // move elements
     }
 
     // adding/removing to map
@@ -174,9 +175,23 @@ public class WorldMap {
     }
 
     private void handleBattle(Element element, Element opponent){
-        // two scenarios
-        element.battle(opponent);
-        opponent.battle(element);
+
+        boolean battleWon = element.battle(opponent);
+
+        if (battleWon){
+
+            int y = 3;
+
+        }
+
+
+        else {
+
+            int x = 2;
+
+        }
+
+
     }
 
     // end checking for battles

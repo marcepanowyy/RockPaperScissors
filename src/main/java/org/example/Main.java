@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.elements.Element;
 import org.example.elements.Paper;
 import org.example.elements.Rock;
 import org.example.elements.Scissors;

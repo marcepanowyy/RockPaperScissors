@@ -21,7 +21,7 @@ public abstract class Element {
 
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
-    public abstract void battle(Element opponent);
+    public abstract boolean battle(Element opponent);
     @Override
     public String toString() {
         return this.symbol.toString().substring(0, 1);

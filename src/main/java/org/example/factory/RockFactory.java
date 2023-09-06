@@ -1,6 +1,5 @@
 package org.example.factory;
 
-import org.example.WorldMap;
 import org.example.elements.Rock;
 
 public class RockFactory extends ElementFactory{
