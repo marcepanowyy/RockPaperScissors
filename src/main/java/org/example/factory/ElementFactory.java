@@ -1,9 +1,10 @@
 package org.example.factory;
 
-import org.example.elements.IElement;
+import org.example.WorldMap;
+import org.example.elements.Element;
 
 public abstract class ElementFactory {
 
-    public abstract IElement createElement(int x, int y);
+    public abstract Element createElement(WorldMap worldMap, int x, int y);
 
 }

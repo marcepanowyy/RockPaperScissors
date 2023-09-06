@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.elements.AbstractMapElement;
-import org.example.elements.IElement;
+import org.example.elements.Element;
+import org.example.elements.IMapElement;
 import org.example.utils.Vector2D;
 
 import java.util.ArrayList;
@@ -13,47 +13,40 @@ public class WorldMap {
 
     private final int width;
     private final int height;
-    private final Map<Vector2D, List<IElement>> map = new HashMap<>();
+    private final Map<Vector2D, List<Element>> map = new HashMap<>();
 
     public WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    public void addElement(IElement element) {
+    public void addElement(Element element) throws IllegalArgumentException {
 
-        if (element instanceof AbstractMapElement mapElement) {
+        Vector2D position = element.getPosition();
 
-            Vector2D position = mapElement.getPosition();
+        if (isWithinBounds(position)) {
 
-            if (isWithinBounds(position)) {
+            List<Element> elementsAtPosition = map.computeIfAbsent(position, k -> new ArrayList<>());
+            elementsAtPosition.add(element);
 
-                List<IElement> elementsAtPosition = map.computeIfAbsent(position, k -> new ArrayList<>());
-                elementsAtPosition.add(element);
-
-            } else {
-                throw new IllegalArgumentException("Element position is out of bounds");
-            }
+        } else {
+            throw new IllegalArgumentException("Element position is out of bounds");
         }
     }
 
-    public void removeElement(IElement element) {
+    public void removeElement(Element element) {
 
-        if (element instanceof AbstractMapElement mapElement) {
-
-            Vector2D position = mapElement.getPosition();
-            List<IElement> elementsAtPosition = map.get(position);
+            Vector2D position = element.getPosition();
+            List<Element> elementsAtPosition = map.get(position);
 
             if (elementsAtPosition != null) {
                 elementsAtPosition.remove(element);
-
                 if (elementsAtPosition.isEmpty()) {
                     map.remove(position);
                 }
             }
         }
     }
-
 
     public void draw() {
 
@@ -64,12 +57,12 @@ public class WorldMap {
             for (int j = 0; j < width; j++) {
 
                 Vector2D position = new Vector2D(j, i);
-                List<IElement> elementsAtPosition = map.get(position);
+                List<Element> elementsAtPosition = map.get(position);
                 String symbol;
 
                 if (elementsAtPosition != null && !elementsAtPosition.isEmpty()) {
 
-                    IElement firstElement = elementsAtPosition.get(0);
+                    Element firstElement = elementsAtPosition.get(0);
                     symbol = firstElement.toString();
 
                 } else {
@@ -86,6 +79,14 @@ public class WorldMap {
     private boolean isWithinBounds(Vector2D position) {
         return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
     }
+
+
+    // find the nearest element different from itself
+    public Element findCompanion(Element mapElement) {
+
+    return null;
+    }
+
 
 }
 

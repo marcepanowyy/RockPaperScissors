@@ -3,19 +3,19 @@ import java.util.Objects;
 
 public class Vector2D {
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
-    public Vector2D(int x, int y){
+    public Vector2D(double x, double y){
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
     @Override

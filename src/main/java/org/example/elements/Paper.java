@@ -1,29 +1,12 @@
 package org.example.elements;
 
+import org.example.WorldMap;
 import org.example.enums.ElementEnum;
 
-public class Paper extends AbstractMapElement implements IElement {
+public class Paper extends Element {
 
-    // abstract
-
-    public Paper(int x, int y){
-        super(x, y);
-    }
-
-    // end abstract
-
-    // interface
-
-    @Override
-    public void interactWith(IElement otherElement){
-
-    }
-
-    // end interface
-
-    @Override
-    public String toString() {
-        return "P";
+    public Paper(WorldMap worldMap, int x, int y){
+        super(worldMap, ElementEnum.PAPER, x, y);
     }
 
 }
