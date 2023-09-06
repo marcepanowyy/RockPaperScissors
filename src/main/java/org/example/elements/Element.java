@@ -9,27 +9,15 @@ public class Element {
     private Vector2D position;
     private final WorldMap worldMap;
     private final ElementEnum symbol;
-
+    private Element companion;
     public Element(WorldMap worldMap, ElementEnum symbol, int x, int y) {
         this.position = new Vector2D(x, y);
         this.symbol = symbol;
         this.worldMap = worldMap;
     }
 
-    @Override
-    public String toString() {
-        return this.symbol.toString().substring(0, 1);
-    }
+    public double calculateDistanceToOther(Element companion) {
 
-    public Vector2D getPosition() {
-        return position;
-    }
-
-    public ElementEnum getSymbol(){
-        return this.symbol;
-    }
-
-    public double calculateDistanceToCompanion(Element companion) {
         Vector2D position1 = this.getPosition();
         Vector2D position2 = companion.getPosition();
 
@@ -38,6 +26,27 @@ public class Element {
 
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
+    @Override
+    public String toString() {
+        return this.symbol.toString().substring(0, 1);
+    }
 
+    // getters & setters
+
+    public Vector2D getPosition() {
+        return position;
+    }
+    public ElementEnum getSymbol(){
+        return this.symbol;
+    }
+    public Element getCompanion() {
+        return companion;
+    }
+    public void setCompanion(Element companion) {
+        this.companion = companion;
+    }
+    public void setPosition(Vector2D position) {
+        this.position = position;
+    }
 
 }

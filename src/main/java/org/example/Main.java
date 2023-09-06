@@ -34,7 +34,5 @@ public class Main {
 
         map.draw();
 
-        ElementDistancePair companion = map.findCompanion(rock1);
-        System.out.println("companion of " + rock1.getSymbol() + " at position " + rock1.getPosition() +" is " + companion.getElement().getSymbol() + ", at position " + companion.getElement().getPosition() + " with distance " + companion.getDistance());
     }
 }
