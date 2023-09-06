@@ -1,26 +1,25 @@
 package org.example;
-
 import org.example.elements.Element;
 import org.example.utils.Vector2D;
-
 import java.util.*;
 
 public class WorldMap {
-
     private final int width;
     private final int height;
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
-//    private final double updateDistance = 0.5;
+    private final double updateDistance = 0.5;
     private final double battleRange = 0.5;
     public WorldMap(int width, int height) {
         this.width = width;
         this.height = height;
     }
-
     public void init(){
         findCompanions();
+        updateElements(updateDistance);
     }
+
+    // adding/removing to map
     public void addElement(Element element) throws IllegalArgumentException {
 
         Vector2D position = element.getPosition();
@@ -34,42 +33,17 @@ public class WorldMap {
         }
 
     }
-
     public void removeElement(Element element) {
         elements.remove(element);
     }
 
-    public void draw() {
+    // end adding/removing to map
 
-        String[][] mapArray = new String[height][width];
-
-        for (int i = 0; i < height; i++) {
-            Arrays.fill(mapArray[i], " ");
-        }
-
-        for (Element element : elements) {
-            Vector2D position = element.getPosition();
-            int x = (int) position.getX();
-            int y = (int) position.getY();
-
-            mapArray[y][x] = element.toString();
-        }
-
-        for (int i = height - 1; i >= 0; i--) {
-            System.out.println();
-            for (int j = 0; j < width; j++) {
-                System.out.print("[" + mapArray[i][j] + "] ");
-            }
-        }
-
-        System.out.println();
-    }
+    // finding companions
 
     public void findCompanions() {
         elements.forEach(this::findCompanion);
     }
-
-    // find the nearest element different from itself
     public void findCompanion(Element sourceElement) {
 
         Element closestCompanion = null;
@@ -91,9 +65,15 @@ public class WorldMap {
         sourceElement.setCompanion(closestCompanion);
     }
 
+    // end finding companions
+
+    // find the nearest element different from itself
+
     private boolean isWithinBounds(Vector2D position) {
         return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
     }
+
+    // updating elements
 
     public void updateElements(double updateDistance) {
 
@@ -103,6 +83,7 @@ public class WorldMap {
             }
         }
 
+        // after updating all the positions we set empty map
         oldPositions.clear();
     }
 
@@ -163,6 +144,7 @@ public class WorldMap {
         }
     }
 
+    // end updating elements
 
     // getters & setters
 
@@ -170,5 +152,36 @@ public class WorldMap {
         return elements;
     }
 
+    public Map<Element, Vector2D> getOldPositions() {
+        return oldPositions;
+    }
+
+    // end getters & setters
+
+    public void draw() {
+
+        String[][] mapArray = new String[height][width];
+
+        for (int i = 0; i < height; i++) {
+            Arrays.fill(mapArray[i], " ");
+        }
+
+        for (Element element : elements) {
+            Vector2D position = element.getPosition();
+            int x = (int) position.getX();
+            int y = (int) position.getY();
+
+            mapArray[y][x] = element.toString();
+        }
+
+        for (int i = height - 1; i >= 0; i--) {
+            System.out.println();
+            for (int j = 0; j < width; j++) {
+                System.out.print("[" + mapArray[i][j] + "] ");
+            }
+        }
+
+        System.out.println();
+    }
 
 }
