@@ -35,8 +35,8 @@ public class ElementTest {
         paperFactory = new PaperFactory();
         scissorsFactory = new ScissorsFactory();
 
-        rock = rockFactory.createElement(worldMap, 0, 0);
-        paper = paperFactory.createElement(worldMap, 3, 4);
+        rock = rockFactory.createElement(0, 0);
+        paper = paperFactory.createElement(3, 4);
 
     }
 

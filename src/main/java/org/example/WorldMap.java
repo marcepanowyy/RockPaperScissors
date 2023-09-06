@@ -20,6 +20,12 @@ public class WorldMap {
         findOpponents();
     }
 
+    public void performRound(){
+        checkForBattles();
+        findOpponents(); // find opponents again, after the battle, the opponents of all elements can change.
+        updateElements();
+    }
+
     // adding/removing to map
     public void addElement(Element element) throws IllegalArgumentException {
 
@@ -47,23 +53,26 @@ public class WorldMap {
     }
     public void findOpponent(Element sourceElement) {
 
-        Element closestOpponent = null;
-        double shortestDistance = Double.MAX_VALUE;
+        if (sourceElement.getOpponent() == null) {
 
-        for (Element element : elements) {
+            Element closestOpponent = null;
+            double shortestDistance = Double.MAX_VALUE;
 
-            if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) {
-                continue;
+            for (Element element : elements) {
+
+                if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) {
+                    continue;
+                }
+
+                double distance = sourceElement.calculateDistanceToOther(element);
+
+                if (distance < shortestDistance) {
+                    shortestDistance = distance;
+                    closestOpponent = element;
+                }
             }
-
-            double distance = sourceElement.calculateDistanceToOther(element);
-
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                closestOpponent = element;
-            }
+            sourceElement.setOpponent(closestOpponent);
         }
-        sourceElement.setOpponent(closestOpponent);
     }
 
     // end finding opponents
@@ -113,43 +122,64 @@ public class WorldMap {
 
             double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            if (distance > battleRange) {
+            Vector2D oldPosition = element.getPosition();
 
-                Vector2D oldPosition = element.getPosition();
+            double ratio = movementDistance / distance;
+            double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
+            double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
+            Vector2D updatedPosition = new Vector2D(newX, newY);
+            element.setPosition(updatedPosition);
+            oldPositions.put(element, oldPosition);
 
-                double ratio = movementDistance / distance;
-                double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
-                double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
-                Vector2D updatedPosition = new Vector2D(newX, newY);
-                element.setPosition(updatedPosition);
-                oldPositions.put(element, oldPosition);
+            // if the opponent's opponent is element, update its position with opposite vector
+            if (opponent.getOpponent() == element) {
 
-                // if the opponent's opponent is element, update its position with opposite vector
-                if (opponent.getOpponent() == element) {
+                Vector2D oldOpponentPosition = opponent.getPosition();
 
-                    Vector2D oldOpponentPosition = opponent.getPosition();
-
-                    double newOpponentX = Math.round((opponentPosition.getX() - ratio * deltaX) * 100) / 100.0;
-                    double newOpponentY = Math.round((opponentPosition.getY() - ratio * deltaY) * 100) / 100.0;
-                    Vector2D updatedOpponentPosition = new Vector2D(newOpponentX, newOpponentY);
-                    opponent.setPosition(updatedOpponentPosition);
-                    oldPositions.put(opponent, oldOpponentPosition);
-
-                }
-
-            } else {
-
-                // add battle logic
-                System.out.println("battle");
-
+                double newOpponentX = Math.round((opponentPosition.getX() - ratio * deltaX) * 100) / 100.0;
+                double newOpponentY = Math.round((opponentPosition.getY() - ratio * deltaY) * 100) / 100.0;
+                Vector2D updatedOpponentPosition = new Vector2D(newOpponentX, newOpponentY);
+                opponent.setPosition(updatedOpponentPosition);
+                oldPositions.put(opponent, oldOpponentPosition);
 
             }
-
-
         }
     }
 
     // end updating elements
+
+    // checking for battles and handling them if they exist
+
+    public void checkForBattles(){
+
+        for (Element element : elements) {
+
+            Element opponent = element.getOpponent();
+
+            if (opponent != null) {
+
+                if(element.calculateDistanceToOther(opponent) <= battleRange && element == opponent.getOpponent()) {
+
+                    handleBattle(element, opponent);
+
+                    // handle pair not single element
+
+                    // todo - remove element from map, create new one after removal
+
+                    // remove their opponents and completely defeated elements, it may happen that a removed element was an opponent for another element, so handle this situation
+
+                }
+            }
+        }
+    }
+
+    private void handleBattle(Element element, Element opponent){
+        // two scenarios
+        element.battle(opponent);
+        opponent.battle(element);
+    }
+
+    // end checking for battles
 
     // getters & setters
 

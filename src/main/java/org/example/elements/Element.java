@@ -1,21 +1,16 @@
 package org.example.elements;
 
-import org.example.WorldMap;
 import org.example.enums.ElementEnum;
 import org.example.utils.Vector2D;
 
 public abstract class Element {
-
     private Vector2D position;
-    private final WorldMap worldMap;
     private final ElementEnum symbol;
     private Element opponent;
-    public Element(WorldMap worldMap, ElementEnum symbol, int x, int y) {
+    public Element(ElementEnum symbol, int x, int y) {
         this.position = new Vector2D(x, y);
         this.symbol = symbol;
-        this.worldMap = worldMap;
     }
-
     public double calculateDistanceToOther(Element opponent) {
 
         Vector2D position1 = this.getPosition();
@@ -26,9 +21,7 @@ public abstract class Element {
 
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
-
     public abstract void battle(Element opponent);
-
     @Override
     public String toString() {
         return this.symbol.toString().substring(0, 1);

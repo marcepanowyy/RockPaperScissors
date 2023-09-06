@@ -1,10 +1,7 @@
 import org.example.WorldMap;
 import org.example.WorldMapBuilder;
 import org.example.elements.Element;
-import org.example.elements.Paper;
 import org.example.elements.Rock;
-import org.example.elements.Scissors;
-import org.example.enums.ElementEnum;
 import org.example.factory.PaperFactory;
 import org.example.factory.RockFactory;
 import org.example.factory.ScissorsFactory;
@@ -41,9 +38,9 @@ public class WorldMapTest {
                 .battleRange(2)
                 .build();
 
-        rock1 = rockFactory.createElement(worldMap, 0, 0);
-        paper1 = paperFactory.createElement(worldMap, 3, 4);
-        paper2 = paperFactory.createElement(worldMap, 5, 12);
+        rock1 = rockFactory.createElement(0, 0);
+        paper1 = paperFactory.createElement(3, 4);
+        paper2 = paperFactory.createElement(5, 12);
     }
 
     @Test
@@ -57,7 +54,7 @@ public class WorldMapTest {
     @Test
     public void testAddElementOutOfBounds() {
 
-        Rock element = rockFactory.createElement(worldMap, 20, 20);
+        Rock element = rockFactory.createElement(20, 20);
         assertThrows(IllegalArgumentException.class, () -> worldMap.addElement(element));
 
     }

@@ -20,9 +20,9 @@ public class Main {
                 .battleRange(2)
                 .build();
 
-        Rock rock1 =  rockFactory.createElement(map, 0, 0);
-        Paper paper1 = paperFactory.createElement(map, 8, 0);
-//        Scissors scissors1 = scissorsFactory.createElement(map, 7, 2);
+        Rock rock1 =  rockFactory.createElement(0, 0);
+        Paper paper1 = paperFactory.createElement(8, 0);
+//        Scissors scissors1 = scissorsFactory.createElement(7, 2);
 
         map.addElement(rock1);
         map.addElement(paper1);
@@ -31,13 +31,14 @@ public class Main {
         map.init();
 
         map.draw();
-        map.updateElements();
+        map.performRound();
         map.draw();
-        map.updateElements();
+        map.performRound();
+
         map.draw();
-        map.updateElements();
+        map.performRound();
+
         map.draw();
-        map.updateElements();
-        map.draw();
+        map.performRound();
     }
 }
