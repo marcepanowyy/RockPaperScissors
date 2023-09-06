@@ -1,4 +1,5 @@
 import org.example.WorldMap;
+import org.example.WorldMapBuilder;
 import org.example.elements.Element;
 import org.example.enums.ElementEnum;
 import org.example.utils.Vector2D;
@@ -15,7 +16,14 @@ public class WorldMapTest {
 
     @BeforeEach
     public void setUpBeforeEach(){
-        worldMap = new WorldMap(15, 15);
+
+        worldMap = new WorldMapBuilder()
+                .width(15)
+                .height(15)
+                .movementDistance(1)
+                .battleRange(2)
+                .build();
+
         rock1 = new Element(worldMap, ElementEnum.ROCK, 0, 0);
         paper1 = new Element(worldMap, ElementEnum.PAPER, 3, 4);
         paper2 = new Element(worldMap, ElementEnum.PAPER, 5, 12);
@@ -29,7 +37,7 @@ public class WorldMapTest {
 
     @Test
     public void testAddElementOutOfBounds() {
-        WorldMap worldMap = new WorldMap(10, 10);
+
         Element element = new Element(worldMap, ElementEnum.ROCK, 20, 20);
         assertThrows(IllegalArgumentException.class, () -> worldMap.addElement(element));
     }
@@ -67,8 +75,8 @@ public class WorldMapTest {
 
         worldMap.findCompanions();
 
-        worldMap.updateElement(rock1, 1); // paper companion is updating also
-        worldMap.updateElement(paper2, 1);
+        worldMap.updateElement(rock1); // paper companion is updating also
+        worldMap.updateElement(paper2);
 
         assertEquals(rock1.getPosition(), new Vector2D(0.6, 0.8));
         assertEquals(paper1.getPosition(), new Vector2D(2.4, 3.2));
@@ -84,7 +92,7 @@ public class WorldMapTest {
         worldMap.addElement(paper2);
 
         worldMap.findCompanions();
-        worldMap.updateElements(1);
+        worldMap.updateElements();
 
         assertEquals(rock1.getPosition(), new Vector2D(0.6, 0.8));
         assertEquals(paper1.getPosition(), new Vector2D(2.4, 3.2));

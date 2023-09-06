@@ -7,7 +7,6 @@ import org.example.elements.Scissors;
 import org.example.factory.PaperFactory;
 import org.example.factory.RockFactory;
 import org.example.factory.ScissorsFactory;
-import org.example.utils.ElementDistancePair;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,22 +15,35 @@ public class Main {
         PaperFactory paperFactory = new PaperFactory();
         ScissorsFactory scissorsFactory = new ScissorsFactory();
 
-        WorldMap map = new WorldMap(10, 10);
+        WorldMap map = new WorldMapBuilder()
+                .width(10)
+                .height(10)
+                .movementDistance(0.2)
+                .battleRange(0.5)
+                .build();
 
         Rock rock1 =  rockFactory.createElement(map, 1, 3);
         Paper paper1 = paperFactory.createElement(map, 4, 3);
-        Scissors scissors1 = scissorsFactory.createElement(map, 4, 8);
-        Scissors scissors2 = scissorsFactory.createElement(map, 5, 9);
-//        Scissors scissors3 = scissorsFactory.createElement(map, 6, 3);
-        Scissors scissors4 = scissorsFactory.createElement(map, 7, 2);
+//        Scissors scissors1 = scissorsFactory.createElement(map, 7, 2);
 
         map.addElement(rock1);
-//        map.addElement(paper1);
-        map.addElement(scissors1);
-        map.addElement(scissors2);
-//        map.addElement(scissors3);
-        map.addElement(scissors4);
+        map.addElement(paper1);
+//        map.addElement(scissors1);
 
+        map.init();
+
+        map.draw();
+        map.updateElements();
+        map.draw();
+        map.updateElements();
+        map.draw();
+        map.updateElements();
+        map.draw();
+        map.updateElements();
+        map.draw();
+        map.updateElements();
+        map.draw();
+        map.updateElements();
         map.draw();
 
     }

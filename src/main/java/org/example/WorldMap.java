@@ -8,15 +8,16 @@ public class WorldMap {
     private final int height;
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
-    private final double updateDistance = 0.5;
-    private final double battleRange = 0.5;
-    public WorldMap(int width, int height) {
+    private final double movementDistance; // update distance should be smaller than battleRange
+    private final double battleRange;
+    public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
         this.height = height;
+        this.movementDistance = movementDistance;
+        this.battleRange = battleRange;
     }
     public void init(){
         findCompanions();
-        updateElements(updateDistance);
     }
 
     // adding/removing to map
@@ -75,11 +76,11 @@ public class WorldMap {
 
     // updating elements
 
-    public void updateElements(double updateDistance) {
+    public void updateElements() {
 
         for (Element element : elements) {
             if (!oldPositions.containsKey(element)) {
-                updateElement(element, updateDistance);
+                updateElement(element);
             }
         }
 
@@ -87,7 +88,7 @@ public class WorldMap {
         oldPositions.clear();
     }
 
-    public void updateElement(Element element, double updateDistance) {
+    public void updateElement(Element element) {
 
         Element companion = element.getCompanion();
 
@@ -116,7 +117,7 @@ public class WorldMap {
 
                 Vector2D oldPosition = element.getPosition();
 
-                double ratio = updateDistance / distance;
+                double ratio = movementDistance / distance;
                 double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
                 double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
                 Vector2D updatedPosition = new Vector2D(newX, newY);
@@ -140,6 +141,7 @@ public class WorldMap {
 
                 // add battle logic
                 int x = 2;
+                System.out.println("here for element");
             }
         }
     }
@@ -183,5 +185,6 @@ public class WorldMap {
 
         System.out.println();
     }
+
 
 }
