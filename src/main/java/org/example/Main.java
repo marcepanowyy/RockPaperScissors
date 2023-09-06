@@ -15,15 +15,10 @@ public class Main {
         PaperFactory paperFactory = new PaperFactory();
         ScissorsFactory scissorsFactory = new ScissorsFactory();
 
-        WorldMap map = new WorldMapBuilder()
-                .width(10)
-                .height(10)
-                .movementDistance(0.2)
-                .battleRange(0.5)
-                .build();
+        WorldMap map = new WorldMapBuilder().build();
 
-        Rock rock1 =  rockFactory.createElement(map, 1, 3);
-        Paper paper1 = paperFactory.createElement(map, 4, 3);
+        Rock rock1 =  rockFactory.createElement(map, 0, 0);
+        Paper paper1 = paperFactory.createElement(map, 5, 0);
 //        Scissors scissors1 = scissorsFactory.createElement(map, 7, 2);
 
         map.addElement(rock1);

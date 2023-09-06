@@ -1,10 +1,10 @@
 package org.example;
 
 public class WorldMapBuilder {
-    private int width;
-    private int height;
-    private double movementDistance;
-    private double battleRange;
+    private int width = 10;
+    private int height = 10;
+    private double movementDistance = 0.5;
+    private double battleRange = 0.2;
 
     public WorldMapBuilder width(int width) {
         this.width = width;

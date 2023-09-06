@@ -141,7 +141,7 @@ public class WorldMap {
 
                 // add battle logic
                 int x = 2;
-                System.out.println("here for element");
+                System.out.println("battle");
             }
         }
     }
