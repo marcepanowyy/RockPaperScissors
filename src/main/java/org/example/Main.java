@@ -15,10 +15,13 @@ public class Main {
         PaperFactory paperFactory = new PaperFactory();
         ScissorsFactory scissorsFactory = new ScissorsFactory();
 
-        WorldMap map = new WorldMapBuilder().build();
+        WorldMap map = new WorldMapBuilder()
+                .movementDistance(1)
+                .battleRange(2)
+                .build();
 
         Rock rock1 =  rockFactory.createElement(map, 0, 0);
-        Paper paper1 = paperFactory.createElement(map, 5, 0);
+        Paper paper1 = paperFactory.createElement(map, 8, 0);
 //        Scissors scissors1 = scissorsFactory.createElement(map, 7, 2);
 
         map.addElement(rock1);
@@ -35,11 +38,7 @@ public class Main {
         map.updateElements();
         map.draw();
         map.updateElements();
-        map.draw();
-        map.updateElements();
-        map.draw();
-        map.updateElements();
-        map.draw();
+
 
     }
 }

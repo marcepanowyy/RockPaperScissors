@@ -56,13 +56,13 @@ public class WorldMapTest {
         worldMap.addElement(paper1);
         worldMap.addElement(paper2);
 
-        worldMap.findCompanion(rock1);
-        worldMap.findCompanion(paper1);
-        worldMap.findCompanion(paper2);
+        worldMap.findOpponent(rock1);
+        worldMap.findOpponent(paper1);
+        worldMap.findOpponent(paper2);
 
-        assertEquals(rock1.getCompanion(), paper1);
-        assertEquals(paper1.getCompanion(), rock1);
-        assertEquals(paper2.getCompanion(), rock1);
+        assertEquals(rock1.getOpponent(), paper1);
+        assertEquals(paper1.getOpponent(), rock1);
+        assertEquals(paper2.getOpponent(), rock1);
 
     }
 
@@ -73,7 +73,7 @@ public class WorldMapTest {
         worldMap.addElement(paper1);
         worldMap.addElement(paper2);
 
-        worldMap.findCompanions();
+        worldMap.findOpponents();
 
         worldMap.updateElement(rock1); // paper companion is updating also
         worldMap.updateElement(paper2);
@@ -91,7 +91,7 @@ public class WorldMapTest {
         worldMap.addElement(paper1);
         worldMap.addElement(paper2);
 
-        worldMap.findCompanions();
+        worldMap.findOpponents();
         worldMap.updateElements();
 
         assertEquals(rock1.getPosition(), new Vector2D(0.6, 0.8));
