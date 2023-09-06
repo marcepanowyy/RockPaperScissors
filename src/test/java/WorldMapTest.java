@@ -2,9 +2,8 @@ import org.example.WorldMap;
 import org.example.WorldMapBuilder;
 import org.example.elements.Element;
 import org.example.elements.Rock;
-import org.example.factory.PaperFactory;
-import org.example.factory.RockFactory;
-import org.example.factory.ScissorsFactory;
+import org.example.enums.ElementEnum;
+import org.example.factory.ElementFactory;
 import org.example.utils.Vector2D;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,19 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WorldMapTest {
     static WorldMap worldMap;
-    static RockFactory rockFactory;
-    static PaperFactory paperFactory;
-    static ScissorsFactory scissorsFactory;
+    static ElementFactory elementFactory;
     private static Element rock1;
     private static Element paper1;
     private static Element paper2;
     @BeforeAll
     public static void setUpBeforeAll(){
-
-        rockFactory = new RockFactory();
-        paperFactory = new PaperFactory();
-        scissorsFactory = new ScissorsFactory();
-
+        elementFactory = new ElementFactory();
     }
     @BeforeEach
     public void setUpBeforeEach(){
@@ -38,9 +31,9 @@ public class WorldMapTest {
                 .battleRange(2)
                 .build();
 
-        rock1 = rockFactory.createElement(0, 0);
-        paper1 = paperFactory.createElement(3, 4);
-        paper2 = paperFactory.createElement(5, 12);
+        rock1 = elementFactory.createElement(ElementEnum.ROCK, 0, 0);
+        paper1 = elementFactory.createElement(ElementEnum.PAPER, 3, 4);
+        paper2 = elementFactory.createElement(ElementEnum.PAPER, 5, 12);
     }
 
     @Test
@@ -54,7 +47,7 @@ public class WorldMapTest {
     @Test
     public void testAddElementOutOfBounds() {
 
-        Rock element = rockFactory.createElement(20, 20);
+        Rock element = (Rock) elementFactory.createElement(ElementEnum.ROCK, 20, 20);
         assertThrows(IllegalArgumentException.class, () -> worldMap.addElement(element));
 
     }
