@@ -1,6 +1,7 @@
 package org.example;
 import org.example.elements.Element;
-import org.example.enums.ElementEnum;
+import org.example.factory.ElementFactory;
+import org.example.utils.UniquePair;
 import org.example.utils.Vector2D;
 import java.util.*;
 
@@ -9,8 +10,10 @@ public class WorldMap {
     private final int height;
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
+    private final Set<UniquePair<Element, Element>> uniqueBattlePairs = new HashSet<>();
     private final double movementDistance; // movement distance should be smaller than battleRange
     private final double battleRange;
+    private final ElementFactory elementFactory = new ElementFactory();
     public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
         this.height = height;
@@ -22,7 +25,8 @@ public class WorldMap {
     }
 
     public void performRound(){
-        checkForBattles(); // check for battles and handle them
+        checkForBattles(); // check for battles (add them to special map)
+        handleBattles(); // handle battles
 //        updateOpponents(); // if element's opponent is not in 'elements', that means it should be changed (updated)
         updateElements(); // move elements
     }
@@ -149,7 +153,7 @@ public class WorldMap {
 
     // end updating elements
 
-    // checking for battles and handling them if they exist
+    // checking for battles
 
     public void checkForBattles(){
 
@@ -161,36 +165,43 @@ public class WorldMap {
 
                 if(element.calculateDistanceToOther(opponent) <= battleRange && element == opponent.getOpponent()) {
 
-                    handleBattle(element, opponent);
-
-                    // handle pair not single element
-
-                    // todo - remove element from map, create new one after removal
-
-                    // remove their opponents and completely defeated elements, it may happen that a removed element was an opponent for another element, so handle this situation
+                    UniquePair<Element, Element> battlePair = new UniquePair<>(element, opponent);
+                    uniqueBattlePairs.add(battlePair);
 
                 }
             }
         }
     }
 
+    private void handleBattles(){
+
+        for (UniquePair battleElements : uniqueBattlePairs) {
+            System.out.println(battleElements.toString());
+        }
+
+        uniqueBattlePairs.clear();
+
+    }
+
     private void handleBattle(Element element, Element opponent){
 
         boolean battleWon = element.battle(opponent);
 
+        Element newElement;
+
         if (battleWon){
 
-            int y = 3;
+            newElement = elementFactory.createElement(element.getSymbol(), 1, 1);
 
         }
-
 
         else {
 
-            int x = 2;
+            newElement = elementFactory.createElement(opponent.getSymbol(), 1, 1);
 
         }
 
+//        addElement(newElement);
 
     }
 
