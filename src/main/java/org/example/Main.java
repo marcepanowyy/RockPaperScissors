@@ -54,6 +54,10 @@ public class Main {
         map.performRound();
         map.draw();
 
+        map.performRound();
+        map.draw();
+
+
 //        HashSet<UniquePair<Element, Element>> uniqueBattleHashSet = new HashSet<>();
 //        uniqueBattleHashSet.add(new UniquePair<>(paper1, paper2));
 //

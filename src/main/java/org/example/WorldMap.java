@@ -14,6 +14,7 @@ public class WorldMap {
     private final double movementDistance; // movement distance should be smaller than battleRange
     private final double battleRange;
     private final ElementFactory elementFactory = new ElementFactory();
+    private final List<Element> removedRoundElements = new ArrayList<>();
     public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
         this.height = height;
@@ -49,7 +50,6 @@ public class WorldMap {
     }
     public void removeElement(Element element) {
         elements.remove(element);
-        element = null;
     }
 
     // end adding/removing to map
@@ -61,7 +61,9 @@ public class WorldMap {
     }
     public void findOpponent(Element sourceElement) {
 
-        if (sourceElement.getOpponent() == null) {
+        // 2nd condition is when element is removed and for this element, another element is opponent
+
+        if (sourceElement.getOpponent() == null || removedRoundElements.contains(sourceElement.getOpponent())) {
 
             Element closestOpponent = null;
             double shortestDistance = Double.MAX_VALUE;
@@ -104,7 +106,6 @@ public class WorldMap {
         // after updating all the positions we set empty map
         oldPositions.clear();
     }
-
     public void updateElement(Element element) {
 
         Element opponent = element.getOpponent();
@@ -199,11 +200,13 @@ public class WorldMap {
             newElement = elementFactory.createElement(element.getSymbol(), opponent.getPosition());
             element.setOpponent(null);
             removeElement(opponent);
+            removedRoundElements.add(opponent);
         }
         else  {
             newElement = elementFactory.createElement(opponent.getSymbol(), element.getPosition());
             opponent.setOpponent(null);
             removeElement(element);
+            removedRoundElements.add(element);
         }
 
         addElement(newElement);
