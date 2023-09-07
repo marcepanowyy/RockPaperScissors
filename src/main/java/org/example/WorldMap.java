@@ -25,10 +25,12 @@ public class WorldMap {
     }
 
     public void performRound(){
+
         checkForBattles(); // check for battles (add them to special map)
-        handleBattles(); // handle battles
-//        updateOpponents(); // if element's opponent is not in 'elements', that means it should be changed (updated)
-        updateElements(); // move elements
+        handleBattles();   // handle battles
+        findOpponents();   // update opponents after battles (new element must have opponent)
+        updateElements();  // move elements
+
     }
 
     // adding/removing to map
@@ -47,6 +49,7 @@ public class WorldMap {
     }
     public void removeElement(Element element) {
         elements.remove(element);
+        element = null;
     }
 
     // end adding/removing to map
@@ -173,39 +176,41 @@ public class WorldMap {
         }
     }
 
+    // end checking for battles
+
+    // handling battles
+
     private void handleBattles(){
 
         for (UniquePair battleElements : uniqueBattlePairs) {
-            System.out.println(battleElements.toString());
+            handleBattle(battleElements.getFirstBattleElement(), battleElements.getSecondBattleElement());
         }
 
         uniqueBattlePairs.clear();
 
     }
-
     private void handleBattle(Element element, Element opponent){
 
         boolean battleWon = element.battle(opponent);
 
         Element newElement;
 
-        if (battleWon){
-
-            newElement = elementFactory.createElement(element.getSymbol(), 1, 1);
-
+        if (battleWon) {
+            newElement = elementFactory.createElement(element.getSymbol(), opponent.getPosition());
+            element.setOpponent(null);
+            removeElement(opponent);
+        }
+        else  {
+            newElement = elementFactory.createElement(opponent.getSymbol(), element.getPosition());
+            opponent.setOpponent(null);
+            removeElement(element);
         }
 
-        else {
-
-            newElement = elementFactory.createElement(opponent.getSymbol(), 1, 1);
-
-        }
-
-//        addElement(newElement);
+        addElement(newElement);
 
     }
 
-    // end checking for battles
+    // end handling battles
 
     // getters & setters
 

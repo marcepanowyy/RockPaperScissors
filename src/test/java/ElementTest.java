@@ -4,6 +4,7 @@ import org.example.elements.Paper;
 import org.example.elements.Rock;
 import org.example.enums.ElementEnum;
 import org.example.factory.ElementFactory;
+import org.example.utils.Vector2D;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +28,8 @@ public class ElementTest {
                 .battleRange(2)
                 .build();
 
-        rock = (Rock) elementFactory.createElement(ElementEnum.ROCK, 0, 0);
-        paper = (Paper) elementFactory.createElement(ElementEnum.PAPER, 3, 4);
+        rock = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(0, 0));
+        paper = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(3, 4));
 
     }
 

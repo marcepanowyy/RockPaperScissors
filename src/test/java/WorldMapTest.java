@@ -31,9 +31,9 @@ public class WorldMapTest {
                 .battleRange(2)
                 .build();
 
-        rock1 = elementFactory.createElement(ElementEnum.ROCK, 0, 0);
-        paper1 = elementFactory.createElement(ElementEnum.PAPER, 3, 4);
-        paper2 = elementFactory.createElement(ElementEnum.PAPER, 5, 12);
+        rock1 = elementFactory.createElement(ElementEnum.ROCK, new Vector2D(0, 0));
+        paper1 = elementFactory.createElement(ElementEnum.PAPER, new Vector2D(3, 4));
+        paper2 = elementFactory.createElement(ElementEnum.PAPER, new Vector2D(5, 12));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class WorldMapTest {
     @Test
     public void testAddElementOutOfBounds() {
 
-        Rock element = (Rock) elementFactory.createElement(ElementEnum.ROCK, 20, 20);
+        Rock element = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(20, 20));
         assertThrows(IllegalArgumentException.class, () -> worldMap.addElement(element));
 
     }

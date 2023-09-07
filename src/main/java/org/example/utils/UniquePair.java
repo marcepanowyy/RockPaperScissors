@@ -43,4 +43,12 @@ public class UniquePair<A extends Element, B extends Element> {
         return "(" + firstBattleElement.getSymbol() + ", " + secondBattleElement.getSymbol() + ")";
     }
 
+    public Element getFirstBattleElement() {
+        return firstBattleElement;
+    }
+
+    public Element getSecondBattleElement() {
+        return secondBattleElement;
+    }
+
 }

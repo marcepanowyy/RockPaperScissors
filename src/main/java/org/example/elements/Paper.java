@@ -1,10 +1,11 @@
 package org.example.elements;
 
 import org.example.enums.ElementEnum;
+import org.example.utils.Vector2D;
 
 public class Paper extends Element {
-    public Paper(int x, int y){
-        super(ElementEnum.PAPER, x, y);
+    public Paper(Vector2D position){
+        super(ElementEnum.PAPER, position);
     }
 
     @Override

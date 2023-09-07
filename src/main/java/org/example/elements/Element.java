@@ -7,8 +7,8 @@ public abstract class Element {
     private Vector2D position;
     private final ElementEnum symbol;
     private Element opponent;
-    public Element(ElementEnum symbol, int x, int y) {
-        this.position = new Vector2D(x, y);
+    public Element(ElementEnum symbol, Vector2D position) {
+        this.position = position;
         this.symbol = symbol;
     }
     public double calculateDistanceToOther(Element opponent) {

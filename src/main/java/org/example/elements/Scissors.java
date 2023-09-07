@@ -1,11 +1,12 @@
 package org.example.elements;
 
 import org.example.enums.ElementEnum;
+import org.example.utils.Vector2D;
 
 public class Scissors extends Element {
 
-    public Scissors(int x, int y){
-        super(ElementEnum.SCISSORS, x, y);
+    public Scissors(Vector2D position){
+        super(ElementEnum.SCISSORS, position);
     }
 
     @Override
