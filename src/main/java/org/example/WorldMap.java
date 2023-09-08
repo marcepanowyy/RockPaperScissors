@@ -10,7 +10,7 @@ public class WorldMap {
     private final int height;
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
-    private final Set<UniquePair<Element, Element>> uniqueBattlePairs = new HashSet<>();
+    private final Set<UniquePair> uniqueBattlePairs = new HashSet<>();
     private final double movementDistance; // movement distance should be smaller than battleRange
     private final double battleRange;
     private final ElementFactory elementFactory = new ElementFactory();
@@ -138,7 +138,7 @@ public class WorldMap {
 
                 if(element.calculateDistanceToOther(opponent) <= battleRange && element == opponent.getOpponent()) {
 
-                    UniquePair<Element, Element> battlePair = new UniquePair<>(element, opponent);
+                    UniquePair battlePair = new UniquePair(element, opponent);
                     uniqueBattlePairs.add(battlePair);
 
                 }

@@ -4,11 +4,11 @@ import org.example.elements.Element;
 
 import java.util.Objects;
 
-public class UniquePair<A extends Element, B extends Element> {
+public class UniquePair {
     private final Element firstBattleElement;
     private final Element secondBattleElement;
-    public UniquePair(Element firstBattleElement, Element secondBattleElement) {
 
+    public UniquePair(Element firstBattleElement, Element secondBattleElement) {
         if (firstBattleElement.hashCode() < secondBattleElement.hashCode()) {
             this.firstBattleElement = firstBattleElement;
             this.secondBattleElement = secondBattleElement;
@@ -17,13 +17,13 @@ public class UniquePair<A extends Element, B extends Element> {
             this.secondBattleElement = firstBattleElement;
         }
     }
+
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UniquePair<A, B> pair = (UniquePair<A, B>) o;
+        UniquePair pair = (UniquePair) o;
 
         return (Objects.equals(firstBattleElement, pair.firstBattleElement) &&
                 Objects.equals(secondBattleElement, pair.secondBattleElement)) ||
@@ -50,5 +50,4 @@ public class UniquePair<A extends Element, B extends Element> {
     public Element getSecondBattleElement() {
         return secondBattleElement;
     }
-
 }
