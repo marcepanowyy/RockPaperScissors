@@ -87,7 +87,8 @@ public class WorldMapTest {
 
         worldMap.findOpponents();
 
-        worldMap.updateElement(rock1); // paper companion is updating also
+        worldMap.updateElement(rock1);
+        worldMap.updateElement(paper1);
         worldMap.updateElement(paper2);
 
         assertEquals(rock1.getPosition(), new Vector2D(0.6, 0.8));

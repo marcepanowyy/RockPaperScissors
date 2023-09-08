@@ -30,6 +30,7 @@ public class WorldMap {
         checkForBattles(); // check for battles (add them to special map)
         handleBattles();   // handle battles
         findOpponents();   // update opponents after battles (new element must have opponent)
+        draw();
         updateElements();  // move elements
     }
 
@@ -38,15 +39,11 @@ public class WorldMap {
 
         Vector2D position = element.getPosition();
 
-        if (isWithinBounds(position)) {
-
-            elements.add(element);
-
-        } else {
-            throw new IllegalArgumentException("Element position is out of bounds");
-        }
+        if (isWithinBounds(position)) elements.add(element);
+        else throw new IllegalArgumentException("Element position is out of bounds");
 
     }
+
     public void removeElement(Element element) {
         elements.remove(element);
     }
@@ -69,9 +66,7 @@ public class WorldMap {
 
             for (Element element : elements) {
 
-                if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) {
-                    continue;
-                }
+                if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) continue;
 
                 double distance = sourceElement.calculateDistanceToOther(element);
 
@@ -86,46 +81,34 @@ public class WorldMap {
 
     // end finding opponents
 
-    private boolean isWithinBounds(Vector2D position) {
-        return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
-    }
-
     // updating elements
 
     public void updateElements() {
 
-        for (Element element : elements) {
-            if (!oldPositions.containsKey(element)) {
-                updateElement(element);
-            }
-        }
+        elements.forEach(this::updateElement);
 
         // after updating all the positions we set empty map
         oldPositions.clear();
+
     }
+
     public void updateElement(Element element) {
 
         Element opponent = element.getOpponent();
 
-        if (opponent != null) {
+        if (opponent != null) { // will never happen, but in case...
 
             Vector2D currPosition = element.getPosition();
-
             Vector2D opponentPosition;
 
             // if old positions has key 'opponent' that means
-            // the opponent moved, so we look for his old position
+            // the opponent has moved, so we look for his old position
 
-            if(oldPositions.containsKey(opponent)){
-                opponentPosition = oldPositions.get(opponent);
-            }
-            else {
-                opponentPosition = opponent.getPosition();
-            }
+            if(oldPositions.containsKey(opponent)) opponentPosition = oldPositions.get(opponent);
+            else opponentPosition = opponent.getPosition();
 
             double deltaX = opponentPosition.getX() - currPosition.getX();
             double deltaY = opponentPosition.getY() - currPosition.getY();
-
             double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             Vector2D oldPosition = element.getPosition();
@@ -133,22 +116,11 @@ public class WorldMap {
             double ratio = movementDistance / distance;
             double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
             double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
+
             Vector2D updatedPosition = new Vector2D(newX, newY);
             element.setPosition(updatedPosition);
             oldPositions.put(element, oldPosition);
 
-            // if the opponent's opponent is element, update its position with opposite vector
-            if (opponent.getOpponent() == element) {
-
-                Vector2D oldOpponentPosition = opponent.getPosition();
-
-                double newOpponentX = Math.round((opponentPosition.getX() - ratio * deltaX) * 100) / 100.0;
-                double newOpponentY = Math.round((opponentPosition.getY() - ratio * deltaY) * 100) / 100.0;
-                Vector2D updatedOpponentPosition = new Vector2D(newOpponentX, newOpponentY);
-                opponent.setPosition(updatedOpponentPosition);
-                oldPositions.put(opponent, oldOpponentPosition);
-
-            }
         }
     }
 
@@ -220,6 +192,10 @@ public class WorldMap {
 
     public Map<Element, Vector2D> getOldPositions() {
         return oldPositions;
+    }
+
+    private boolean isWithinBounds(Vector2D position) {
+        return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
     }
 
     // end getters & setters
