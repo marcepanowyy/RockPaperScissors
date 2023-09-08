@@ -29,30 +29,7 @@ public class Main {
         map.addElement(paper1);
         map.addElement(scissors1);
 
-        map.init();
-
-        map.performRound();
-
-        map.performRound();
-
-        map.performRound();
-
-        map.performRound();
-
-        map.performRound();
-
-        map.performRound();
-        map.performRound();
-        map.performRound();
-        map.performRound();
-
-
-//        HashSet<UniquePair<Element, Element>> uniqueBattleHashSet = new HashSet<>();
-//        uniqueBattleHashSet.add(new UniquePair<>(paper1, paper2));
-//
-//        for (UniquePair battleElements : uniqueBattleHashSet) {
-//            System.out.println(battleElements.toString());
-//        }
+        map.startSimulation();
 
     }
 }

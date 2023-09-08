@@ -8,30 +8,42 @@ import java.util.*;
 public class WorldMap {
     private final int width;
     private final int height;
+    private final double battleRange;
+    private final double movementDistance; // movement distance should be smaller than battleRange
+    private boolean running = true;
+    private final ElementFactory elementFactory = new ElementFactory();
     private final ArrayList<Element> elements = new ArrayList<>();
     private final Map<Element, Vector2D> oldPositions = new HashMap<>();
-    private final Set<UniquePair> uniqueBattlePairs = new HashSet<>();
-    private final double movementDistance; // movement distance should be smaller than battleRange
-    private final double battleRange;
-    private final ElementFactory elementFactory = new ElementFactory();
     private final Map<Element, Vector2D> removedRoundElements = new HashMap<>();
+    private final Set<UniquePair> uniqueBattlePairs = new HashSet<>();
     public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
         this.height = height;
         this.movementDistance = movementDistance;
         this.battleRange = battleRange;
     }
-    public void init(){
+    public void startSimulation(){
+
+        init();
+
+        while (running){
+            performRound();
+        }
+
+        System.out.println("Simulation has ended.");
+
+    }
+    private void init(){
         findOpponents();
     }
-
-    public void performRound(){
+    private void performRound(){
 
         checkForBattles(); // check for battles (add them to special map)
         handleBattles();   // handle battles
         findOpponents();   // update opponents after battles (new element must have opponent)
-        draw();
         updateElements();  // move elements
+        draw();
+
     }
 
     // adding/removing to map
@@ -43,7 +55,6 @@ public class WorldMap {
         else throw new IllegalArgumentException("Element position is out of bounds");
 
     }
-
     public void removeElement(Element element) {
         elements.remove(element);
     }
@@ -75,7 +86,9 @@ public class WorldMap {
                     closestOpponent = element;
                 }
             }
+
             sourceElement.setOpponent(closestOpponent);
+
         }
     }
 
@@ -86,12 +99,15 @@ public class WorldMap {
     public void updateElements() {
 
         elements.forEach(this::updateElement);
+        int countMovedElements = oldPositions.size();
+
+        // implement endgame logic
+        if(countMovedElements == 0) running = false;
 
         // after updating all the positions we set empty map
         oldPositions.clear();
 
     }
-
     public void updateElement(Element element) {
 
         Element opponent = element.getOpponent();
@@ -144,6 +160,7 @@ public class WorldMap {
                 }
             }
         }
+
     }
 
     // end checking for battles
@@ -166,16 +183,21 @@ public class WorldMap {
         Element newElement;
 
         if (battleWon) {
+
             newElement = elementFactory.createElement(element.getSymbol(), opponent.getPosition());
             element.setOpponent(null);
             removeElement(opponent);
             removedRoundElements.put(opponent, opponent.getPosition());
+
         }
+
         else  {
+
             newElement = elementFactory.createElement(opponent.getSymbol(), element.getPosition());
             opponent.setOpponent(null);
             removeElement(element);
             removedRoundElements.put(element, element.getPosition());
+
         }
 
         addElement(newElement);
@@ -189,17 +211,15 @@ public class WorldMap {
     public ArrayList<Element> getElements() {
         return elements;
     }
-
     public Map<Element, Vector2D> getOldPositions() {
         return oldPositions;
     }
 
+    // end getters & setters
+
     private boolean isWithinBounds(Vector2D position) {
         return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
     }
-
-    // end getters & setters
-
     public void draw() {
 
         String[][] mapArray = new String[height][width];
@@ -223,11 +243,6 @@ public class WorldMap {
             }
         }
 
-        System.out.println();
-
-        for(Element element : elements){
-            System.out.print(element.getSymbol() + " " + element.getPosition() + ", ");
-        }
         System.out.println();
 
     }
