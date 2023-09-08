@@ -14,7 +14,7 @@ public class WorldMap {
     private final double movementDistance; // movement distance should be smaller than battleRange
     private final double battleRange;
     private final ElementFactory elementFactory = new ElementFactory();
-    private final List<Element> removedRoundElements = new ArrayList<>();
+    private final Map<Element, Vector2D> removedRoundElements = new HashMap<>();
     public WorldMap(int width, int height, double movementDistance, double battleRange) {
         this.width = width;
         this.height = height;
@@ -31,7 +31,6 @@ public class WorldMap {
         handleBattles();   // handle battles
         findOpponents();   // update opponents after battles (new element must have opponent)
         updateElements();  // move elements
-
     }
 
     // adding/removing to map
@@ -54,7 +53,7 @@ public class WorldMap {
 
     // end adding/removing to map
 
-    // finding opponents
+    // finding opponents (find the nearest element different from itself)
 
     public void findOpponents() {
         elements.forEach(this::findOpponent);
@@ -63,7 +62,7 @@ public class WorldMap {
 
         // 2nd condition is when element is removed and for this element, another element is opponent
 
-        if (sourceElement.getOpponent() == null || removedRoundElements.contains(sourceElement.getOpponent())) {
+        if (sourceElement.getOpponent() == null || removedRoundElements.containsKey(sourceElement.getOpponent())) {
 
             Element closestOpponent = null;
             double shortestDistance = Double.MAX_VALUE;
@@ -86,8 +85,6 @@ public class WorldMap {
     }
 
     // end finding opponents
-
-    // find the nearest element different from itself
 
     private boolean isWithinBounds(Vector2D position) {
         return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
@@ -200,13 +197,13 @@ public class WorldMap {
             newElement = elementFactory.createElement(element.getSymbol(), opponent.getPosition());
             element.setOpponent(null);
             removeElement(opponent);
-            removedRoundElements.add(opponent);
+            removedRoundElements.put(opponent, opponent.getPosition());
         }
         else  {
             newElement = elementFactory.createElement(opponent.getSymbol(), element.getPosition());
             opponent.setOpponent(null);
             removeElement(element);
-            removedRoundElements.add(element);
+            removedRoundElements.put(element, element.getPosition());
         }
 
         addElement(newElement);
@@ -251,7 +248,11 @@ public class WorldMap {
         }
 
         System.out.println();
+
+        for(Element element : elements){
+            System.out.print(element.getSymbol() + " " + element.getPosition() + ", ");
+        }
+        System.out.println();
+
     }
-
-
 }

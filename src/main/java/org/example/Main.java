@@ -31,31 +31,20 @@ public class Main {
 
         map.init();
 
-        map.draw();
+        map.performRound();
 
         map.performRound();
-        map.draw();
 
         map.performRound();
-        map.draw();
 
         map.performRound();
-        map.draw();
 
         map.performRound();
-        map.draw();
 
         map.performRound();
-        map.draw();
-
         map.performRound();
-        map.draw();
-
         map.performRound();
-        map.draw();
-
         map.performRound();
-        map.draw();
 
 
 //        HashSet<UniquePair<Element, Element>> uniqueBattleHashSet = new HashSet<>();
