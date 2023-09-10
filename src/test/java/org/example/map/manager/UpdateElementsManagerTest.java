@@ -58,9 +58,9 @@ public class UpdateElementsManagerTest {
 
         worldMap.getUpdateElementsManager().updateElements();
 
-        assertEquals(rock.getPosition(), new Vector2D(1, 0));
-        assertEquals(paper.getPosition(), new Vector2D(3, 0));
-        assertEquals(scissors.getPosition(), new Vector2D(19, 0));
+        assertEquals(new Vector2D(1, 0), rock.getPosition());
+        assertEquals(new Vector2D(3, 0), paper.getPosition());
+        assertEquals(new Vector2D(19, 0), scissors.getPosition());
 
     }
 
@@ -73,9 +73,9 @@ public class UpdateElementsManagerTest {
 
         worldMap.getUpdateElementsManager().updateElements();
 
-        assertEquals(rock.getPosition(), new Vector2D(1, 0));
-        assertEquals(paper.getPosition(), new Vector2D(5, 0));
-        assertEquals(scissors.getPosition(), new Vector2D(19, 0));
+        assertEquals(new Vector2D(1, 0), rock.getPosition());
+        assertEquals(new Vector2D(5, 0), paper.getPosition());
+        assertEquals(new Vector2D(19, 0), scissors.getPosition());
 
     }
 
@@ -86,9 +86,9 @@ public class UpdateElementsManagerTest {
 
         worldMap.getUpdateElementsManager().updateElements();
 
-        assertEquals(rock.getPosition(), new Vector2D(1, 0));
-        assertEquals(paper.getPosition(), new Vector2D(4, 0));
-        assertEquals(scissors.getPosition(), new Vector2D(20, 0));
+        assertEquals(new Vector2D(1, 0), rock.getPosition());
+        assertEquals( new Vector2D(4, 0), paper.getPosition());
+        assertEquals( new Vector2D(20, 0), scissors.getPosition());
 
     }
 

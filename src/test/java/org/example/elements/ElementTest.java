@@ -2,8 +2,6 @@ package org.example.elements;
 
 import org.example.map.WorldMap;
 import org.example.map.builder.WorldMapBuilder;
-import org.example.elements.Paper;
-import org.example.elements.Rock;
 import org.example.enums.ElementEnum;
 import org.example.factory.ElementFactory;
 import org.example.utils.Vector2D;

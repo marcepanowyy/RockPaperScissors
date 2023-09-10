@@ -13,7 +13,7 @@ public class WorldMap {
 
     private final double battleRange;
 
-    private final double movementDistance; // movement distance should be smaller than battleRange
+    private final double movementDistance; // movement distance should be smaller than battleRange - bullshit
 
     private boolean running = true;
 
@@ -68,7 +68,41 @@ public class WorldMap {
         handleBattlesManager.handleBattles();      // handle battles
         findOpponentsManager.findOpponents();      // update opponents after battles (new element must have opponent)
         updateElementsManager.updateElements();    // move elements
-        draw();
+
+    }
+
+    public void draw() {
+
+        String[][] mapArray = new String[height][width];
+
+        for (int i = 0; i < height; i++) {
+            Arrays.fill(mapArray[i], " ");
+        }
+
+        for (Element element : elements) {
+            Vector2D position = element.getPosition();
+            int x = (int) position.getX();
+            int y = (int) position.getY();
+
+            mapArray[y][x] = element.toString();
+        }
+
+        for (int i = height - 1; i >= 0; i--) {
+            System.out.println();
+            for (int j = 0; j < width; j++) {
+                System.out.print("[" + mapArray[i][j] + "] ");
+            }
+        }
+
+
+        for(Element element: elements){
+
+            System.out.print(element.getSymbol() + " " + element.getPosition() + ", ");
+
+        }
+
+
+        System.out.println();
 
     }
 
@@ -128,43 +162,6 @@ public class WorldMap {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    // end getters & setters
-
-    public void draw() {
-
-        String[][] mapArray = new String[height][width];
-
-        for (int i = 0; i < height; i++) {
-            Arrays.fill(mapArray[i], " ");
-        }
-
-        for (Element element : elements) {
-            Vector2D position = element.getPosition();
-            int x = (int) position.getX();
-            int y = (int) position.getY();
-
-            mapArray[y][x] = element.toString();
-        }
-
-        for (int i = height - 1; i >= 0; i--) {
-            System.out.println();
-            for (int j = 0; j < width; j++) {
-                System.out.print("[" + mapArray[i][j] + "] ");
-            }
-        }
-
-
-        for(Element element: elements){
-
-            System.out.print(element.getSymbol() + " " + element.getPosition() + ", ");
-
-        }
-
-
-        System.out.println();
-
     }
 
 }

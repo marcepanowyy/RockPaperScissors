@@ -14,10 +14,10 @@ public class WorldMapBuilderTest {
 
         worldMap = new WorldMapBuilder().build();
 
-        assertEquals(worldMap.getWidth(), 10);
-        assertEquals(worldMap.getHeight(), 10);
-        assertEquals(worldMap.getMovementDistance(), 1);
-        assertEquals(worldMap.getBattleRange(), 2);
+        assertEquals(10, worldMap.getWidth());
+        assertEquals(10, worldMap.getHeight());
+        assertEquals(1, worldMap.getMovementDistance());
+        assertEquals(2, worldMap.getBattleRange());
 
     }
 
@@ -29,10 +29,10 @@ public class WorldMapBuilderTest {
                 .battleRange(0.5)
                 .build();
 
-        assertEquals(worldMap.getWidth(), 10);
-        assertEquals(worldMap.getHeight(), 200);
-        assertEquals(worldMap.getMovementDistance(), 1);
-        assertEquals(worldMap.getBattleRange(), 0.5);
+        assertEquals(10, worldMap.getWidth());
+        assertEquals(200, worldMap.getHeight());
+        assertEquals(1, worldMap.getMovementDistance());
+        assertEquals(0.5, worldMap.getBattleRange());
 
     }
 
@@ -46,10 +46,10 @@ public class WorldMapBuilderTest {
                 .battleRange(42)
                 .build();
 
-        assertEquals(worldMap.getWidth(), 15);
-        assertEquals(worldMap.getHeight(), 20);
-        assertEquals(worldMap.getMovementDistance(), 11);
-        assertEquals(worldMap.getBattleRange(), 42);
+        assertEquals(15, worldMap.getWidth());
+        assertEquals(20, worldMap.getHeight());
+        assertEquals(11, worldMap.getMovementDistance());
+        assertEquals(42, worldMap.getBattleRange());
 
     }
 
@@ -60,10 +60,10 @@ public class WorldMapBuilderTest {
                 .movementDistance(3)
                 .build();
 
-        assertEquals(worldMap.getWidth(), 10);
-        assertEquals(worldMap.getHeight(), 10);
-        assertEquals(worldMap.getMovementDistance(), 3);
-        assertEquals(worldMap.getBattleRange(), 2);
+        assertEquals(10, worldMap.getWidth());
+        assertEquals(10, worldMap.getHeight());
+        assertEquals(3, worldMap.getMovementDistance());
+        assertEquals(2, worldMap.getBattleRange());
 
     }
 

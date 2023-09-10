@@ -52,7 +52,6 @@ public class HandleBattlesManagerTest {
 
     }
 
-
     @Test
     public void handleBattlesTest(){
 
@@ -80,13 +79,11 @@ public class HandleBattlesManagerTest {
 
         assertTrue(worldMap.getUniqueBattlePairs().isEmpty());
 
-
         // check if added to 'removedRoundElements' losing elements
 
-        assertEquals(worldMap.getRemovedRoundElements().get(paper1), paper1.getPosition());
-        assertEquals(worldMap.getRemovedRoundElements().get(scissors2), scissors2.getPosition());
-        assertEquals(worldMap.getRemovedRoundElements().get(rock2), rock2.getPosition());
-
+        assertEquals(paper1.getPosition(), worldMap.getRemovedRoundElements().get(paper1));
+        assertEquals(scissors2.getPosition(), worldMap.getRemovedRoundElements().get(scissors2));
+        assertEquals(rock2.getPosition(), worldMap.getRemovedRoundElements().get(rock2));
 
         // check if set winning elements' opponent to 'null'
 

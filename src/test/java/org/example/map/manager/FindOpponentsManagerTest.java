@@ -67,12 +67,11 @@ public class FindOpponentsManagerTest {
 
         worldMap.getFindOpponentsManager().findOpponents();
 
-        assertEquals(rock1.getOpponent(), paper1);
-        assertEquals(rock2.getOpponent(), paper1);
-        assertEquals(paper1.getOpponent(), rock2);
+        assertEquals(paper1, rock1.getOpponent());
+        assertEquals(paper1, rock2.getOpponent());
+        assertEquals(rock2, paper1.getOpponent());
 
     }
-
 
     @Test
     public void findOpponentsTest2(){
@@ -87,12 +86,11 @@ public class FindOpponentsManagerTest {
 
         worldMap.getFindOpponentsManager().findOpponents();
 
-        assertEquals(rock1.getOpponent(), paper1);
-        assertEquals(rock2.getOpponent(), paper1);
-        assertEquals(paper1.getOpponent(), rock1);
+        assertEquals(paper1, rock1.getOpponent());
+        assertEquals(paper1, rock2.getOpponent());
+        assertEquals(rock1, paper1.getOpponent());
 
     }
-
 
     @Test
     public void findOpponentsTet3(){
@@ -107,14 +105,13 @@ public class FindOpponentsManagerTest {
 
         worldMap.getFindOpponentsManager().findOpponents();
 
-        assertEquals(rock1.getOpponent(), paper1);
-        assertEquals(rock2.getOpponent(), paper1);
-        assertEquals(paper1.getOpponent(), rock2);
-        assertEquals(paper2.getOpponent(), scissors1);
-        assertEquals(scissors1.getOpponent(), paper2);
-        assertEquals(scissors2.getOpponent(), paper1);
+        assertEquals(paper1, rock1.getOpponent());
+        assertEquals(paper1, rock2.getOpponent());
+        assertEquals(rock2, paper1.getOpponent());
+        assertEquals(scissors1, paper2.getOpponent());
+        assertEquals(paper2, scissors1.getOpponent());
+        assertEquals(paper1, scissors2.getOpponent());
 
     }
-
 
 }
