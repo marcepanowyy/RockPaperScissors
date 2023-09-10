@@ -30,7 +30,7 @@ public class FindOpponentsManager {
 
             for (Element element : worldMap.getElements()) {
 
-                if (element.getSymbol() == sourceElement.getSymbol() || element.equals(sourceElement)) continue;
+                if (element.getSymbol() == sourceElement.getSymbol() || worldMap.getRemovedRoundElements().containsKey(element)) continue;
 
                 double distance = sourceElement.calculateDistanceToOther(element);
 

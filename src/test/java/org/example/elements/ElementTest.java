@@ -1,3 +1,5 @@
+package org.example.elements;
+
 import org.example.map.WorldMap;
 import org.example.map.builder.WorldMapBuilder;
 import org.example.elements.Paper;

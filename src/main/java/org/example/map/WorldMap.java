@@ -106,8 +106,24 @@ public class WorldMap {
         return uniqueBattlePairs;
     }
 
+    public CheckForBattlesManager getCheckForBattlesManager() {
+        return checkForBattlesManager;
+    }
+
+    public FindOpponentsManager getFindOpponentsManager() {
+        return findOpponentsManager;
+    }
+
+    public HandleBattlesManager getHandleBattlesManager() {
+        return handleBattlesManager;
+    }
+
     public MapElementsManager getMapElementsManager() {
         return mapElementsManager;
+    }
+
+    public UpdateElementsManager getUpdateElementsManager() {
+        return updateElementsManager;
     }
 
     public void setRunning(boolean running) {
@@ -148,12 +164,6 @@ public class WorldMap {
 
 
         System.out.println();
-
-    }
-
-    private boolean isWithinBounds(Vector2D position) {
-
-        return position.getX() >= 0 && position.getX() < width && position.getY() >= 0 && position.getY() < height;
 
     }
 
