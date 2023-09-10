@@ -72,23 +72,6 @@ public class WorldMap {
 
     }
 
-    // adding/removing to map
-
-    public void addElement(Element element) throws IllegalArgumentException {
-
-        Vector2D position = element.getPosition();
-
-        if (isWithinBounds(position)) elements.add(element);
-        else throw new IllegalArgumentException("Element position is out of bounds");
-
-    }
-
-    public void removeElement(Element element) {
-        elements.remove(element);
-    }
-
-    // end adding/removing to map
-
     // getters & setters
 
     public int getWidth() {

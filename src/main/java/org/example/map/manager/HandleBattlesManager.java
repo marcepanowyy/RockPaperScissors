@@ -28,7 +28,7 @@ public class HandleBattlesManager {
         worldMap.getUniqueBattlePairs().clear();
     }
 
-    public void handleBattle(Element element, Element opponent){
+    private void handleBattle(Element element, Element opponent){
 
         boolean battleWon = element.battle(opponent);
         Element newElement;

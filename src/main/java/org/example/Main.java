@@ -23,9 +23,9 @@ public class Main {
         Paper paper1 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(8, 0));
         Scissors scissors1 = (Scissors) elementFactory.createElement(ElementEnum.SCISSORS, new Vector2D(4, 9));
 
-        map.addElement(rock1);
-        map.addElement(paper1);
-        map.addElement(scissors1);
+        map.getMapElementsManager().addElement(rock1);
+        map.getMapElementsManager().addElement(paper1);
+        map.getMapElementsManager().addElement(scissors1);
 
         map.startSimulation();
 
