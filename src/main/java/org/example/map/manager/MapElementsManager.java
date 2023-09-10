@@ -24,7 +24,17 @@ public class MapElementsManager {
         worldMap.getElements().remove(element);
     }
 
-    private boolean isWithinBounds(Vector2D position) {
+    public Element getElementAtPosition(Vector2D position) {
+
+        return worldMap.getElements()
+                .stream()
+                .filter(element -> element.getPosition().equals(position))
+                .findFirst()
+                .orElse(null);
+
+    }
+
+    public boolean isWithinBounds(Vector2D position) {
 
         return position.getX() >= 0 && position.getX() < worldMap.getWidth() && position.getY() >= 0 && position.getY() < worldMap.getHeight();
 

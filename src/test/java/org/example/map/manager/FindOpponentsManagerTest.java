@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FindOpponentsManagerTest {
 
-
     static ElementFactory elementFactory;
 
     static WorldMap worldMap;

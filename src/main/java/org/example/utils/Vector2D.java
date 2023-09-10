@@ -31,10 +31,6 @@ public class Vector2D {
         return Objects.hash(x, y);
     }
 
-    public Vector2D add(Vector2D other) {
-        return new Vector2D(this.x + other.x, this.y + other.y);
-    }
-
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
