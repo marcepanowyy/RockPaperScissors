@@ -1,5 +1,5 @@
-import org.example.WorldMap;
-import org.example.WorldMapBuilder;
+import org.example.map.WorldMap;
+import org.example.map.builder.WorldMapBuilder;
 import org.example.elements.Paper;
 import org.example.elements.Rock;
 import org.example.enums.ElementEnum;
@@ -12,8 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ElementTest {
 
     static WorldMap worldMap;
+
     static ElementFactory elementFactory;
+
     static Rock rock;
+
     static Paper paper;
 
     @BeforeAll
@@ -35,9 +38,10 @@ public class ElementTest {
 
     @Test
     public void testCalculateDistanceToCompanion(){
+
         double distance = rock.calculateDistanceToOther(paper);
         assertEquals(5.0, distance, 0.001);
-    }
 
+    }
 
 }

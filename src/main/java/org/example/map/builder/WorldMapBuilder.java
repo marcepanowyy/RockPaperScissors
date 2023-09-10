@@ -1,4 +1,6 @@
-package org.example;
+package org.example.map.builder;
+
+import org.example.map.WorldMap;
 
 public class WorldMapBuilder {
     private int width = 10;

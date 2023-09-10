@@ -1,17 +1,15 @@
 package org.example;
-
-import org.example.elements.Element;
 import org.example.elements.Paper;
 import org.example.elements.Rock;
 import org.example.elements.Scissors;
 import org.example.enums.ElementEnum;
 import org.example.factory.ElementFactory;
-import org.example.utils.UniquePair;
+import org.example.map.WorldMap;
+import org.example.map.builder.WorldMapBuilder;
 import org.example.utils.Vector2D;
 
-import java.util.HashSet;
-
 public class Main {
+
     public static void main(String[] args) {
 
         WorldMap map = new WorldMapBuilder()
