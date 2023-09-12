@@ -1,7 +1,6 @@
 package org.simulation.gui.screen;
 
 import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,17 +30,19 @@ public class SimulationScreen extends Application {
     ElementFactory elementFactory = new ElementFactory();
 
     WorldMap map = new WorldMapBuilder()
-            .movementDistance(0.2)
+            .movementDistance(0.1)
             .width(10)
             .height(10)
-            .battleRange(0.5)
+            .battleRange(1)
             .build();
 
     private final int mapWidth = map.getWidth();
+
     private final int mapHeight = map.getHeight();
 
     private final int cellSize = 4;
-    private final int imageSize = 25;
+
+    private final int imageSize = 35;
 
     private final GridPane mapGrid = createMapGrid();
 
@@ -56,8 +57,11 @@ public class SimulationScreen extends Application {
 
         preloadImages();
 
-//        addRandomElementsToMap(5, 5, 5);
-        addExampleElementsToMap();
+        int scissorsCount = 10;
+        int rockCount = 10;
+        int paperCount = 10;
+
+        addRandomElementsToMap(rockCount, paperCount, scissorsCount);
 
         map.init();
 
@@ -74,15 +78,28 @@ public class SimulationScreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        Thread simulationThread = new Thread(this::startSimulation);
+
+        // set the thread as a daemon to terminate it along with the main thread
+        simulationThread.setDaemon(true);
+        simulationThread.start();
+
+    }
+
+    private void startSimulation() {
+
         timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.2), event -> {
+
+                new KeyFrame(Duration.seconds(0.3), event -> {
+
                     updateGrid();
                     map.performRound();
+
                     if (!map.isRunning()) {
-//                        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-//                        pause.setOnFinished(e -> showSimulationCompleteAlert());
-//                        pause.play();
-//                        timeline.stop();
+
+                        Platform.runLater(this::showSimulationCompleteAlert);
+                        timeline.stop();
+
                     }
                 })
         );
@@ -98,16 +115,19 @@ public class SimulationScreen extends Application {
 
     }
 
-    private void removeOldElements(){
+    private void removeOldElements() {
 
         oldNodes.forEach(node -> {
+
             mapGrid.getChildren().remove(node);
+
         });
+
         oldNodes.clear();
 
     }
 
-    private void addNewElements(){
+    private void addNewElements() {
 
         map.getElements().forEach(element -> {
 
@@ -136,22 +156,17 @@ public class SimulationScreen extends Application {
             oldNodes.add(cell);
 
         });
-
     }
 
-    private GridPane createMapGrid(){
+    private GridPane createMapGrid() {
 
         GridPane mapGrid = new GridPane();
 
         for (int x = 0; x < mapWidth * 10; x++) {
-
             for (int y = 0; y < mapHeight * 10; y++) {
 
                 Pane cell = new Pane();
                 cell.setPrefSize(cellSize, cellSize);
-
-                cell.setStyle("-fx-background-color: #9d9d9d;");
-
                 mapGrid.add(cell, x, mapHeight * 10 - y);
 
             }
@@ -166,61 +181,52 @@ public class SimulationScreen extends Application {
         Image image = imageBuffer.get(element.getSymbol());
 
         if (image != null) {
+
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(imageSize);
             imageView.setFitHeight(imageSize);
-
             return imageView;
+
         }
 
         return null;
     }
 
     private void addRandomElementsToMap(int rockCount, int paperCount, int scissorsCount) {
-
         Random rand = new Random();
 
         for (int i = 0; i < rockCount; i++) {
+
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             Rock rock = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(x, y));
             map.getMapElementsManager().addElement(rock);
+
         }
 
         for (int i = 0; i < paperCount; i++) {
+
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             Paper paper = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(x, y));
             map.getMapElementsManager().addElement(paper);
+
         }
 
         for (int i = 0; i < scissorsCount; i++) {
+
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             Scissors scissors = (Scissors) elementFactory.createElement(ElementEnum.SCISSORS, new Vector2D(x, y));
             map.getMapElementsManager().addElement(scissors);
+
         }
     }
 
-    private void addExampleElementsToMap(){
-
-        Paper paper1 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(0, 0));
-        Rock rock1 = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(2, 2));
-        Rock rock2 = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(2, 2));
-
-        map.getMapElementsManager().addElement(paper1);
-        map.getMapElementsManager().addElement(rock1);
-        map.getMapElementsManager().addElement(rock2);
-
-
-    }
-
     private void preloadImages() {
-
         imageBuffer.put(ElementEnum.ROCK, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock1.png"))));
-        imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper2.png"))));
+        imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper1.png"))));
         imageBuffer.put(ElementEnum.SCISSORS, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors1.png"))));
-
     }
 
     private void showSimulationCompleteAlert() {
@@ -229,13 +235,10 @@ public class SimulationScreen extends Application {
             alert.setHeaderText(null);
             alert.setContentText("Simulation has ended");
             alert.showAndWait();
-
-            // Tutaj możesz dodać kod, który zostanie wykonany po zakończeniu symulacji.
         });
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
