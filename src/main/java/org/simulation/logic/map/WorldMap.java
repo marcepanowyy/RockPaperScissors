@@ -52,7 +52,7 @@ public class WorldMap {
 
         while (running){
             performRound();
-            draw();
+//            draw();
         }
 
         System.out.println("Simulation has ended.");

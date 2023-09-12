@@ -1,11 +1,14 @@
 package org.simulation.gui.screen;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -28,7 +31,7 @@ public class SimulationScreen extends Application {
     ElementFactory elementFactory = new ElementFactory();
 
     WorldMap map = new WorldMapBuilder()
-            .movementDistance(0.1)
+            .movementDistance(0.2)
             .width(10)
             .height(10)
             .battleRange(0.5)
@@ -37,7 +40,7 @@ public class SimulationScreen extends Application {
     private final int mapWidth = map.getWidth();
     private final int mapHeight = map.getHeight();
 
-    private final int cellSize = 3;
+    private final int cellSize = 4;
     private final int imageSize = 25;
 
     private final GridPane mapGrid = createMapGrid();
@@ -46,12 +49,15 @@ public class SimulationScreen extends Application {
 
     private final Map<ElementEnum, Image> imageBuffer = new HashMap<>();
 
+    private Timeline timeline;
+
     @Override
     public void start(Stage primaryStage) {
 
         preloadImages();
 
-        addRandomElementsToMap(5, 5, 5);
+//        addRandomElementsToMap(5, 5, 5);
+        addExampleElementsToMap();
 
         map.init();
 
@@ -68,16 +74,21 @@ public class SimulationScreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.1), event -> {
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.2), event -> {
                     updateGrid();
                     map.performRound();
+                    if (!map.isRunning()) {
+//                        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+//                        pause.setOnFinished(e -> showSimulationCompleteAlert());
+//                        pause.play();
+//                        timeline.stop();
+                    }
                 })
         );
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
     }
 
     private void updateGrid() {
@@ -191,12 +202,36 @@ public class SimulationScreen extends Application {
         }
     }
 
+    private void addExampleElementsToMap(){
+
+        Paper paper1 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(0, 0));
+        Rock rock1 = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(2, 2));
+        Rock rock2 = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(2, 2));
+
+        map.getMapElementsManager().addElement(paper1);
+        map.getMapElementsManager().addElement(rock1);
+        map.getMapElementsManager().addElement(rock2);
+
+
+    }
+
     private void preloadImages() {
 
         imageBuffer.put(ElementEnum.ROCK, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock1.png"))));
         imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper2.png"))));
         imageBuffer.put(ElementEnum.SCISSORS, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors1.png"))));
 
+    }
+
+    private void showSimulationCompleteAlert() {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Simulation has ended");
+            alert.showAndWait();
+
+            // Tutaj możesz dodać kod, który zostanie wykonany po zakończeniu symulacji.
+        });
     }
 
     public static void main(String[] args) {

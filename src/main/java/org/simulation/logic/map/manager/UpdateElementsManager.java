@@ -15,15 +15,12 @@ public class UpdateElementsManager {
 
     public void updateElements() {
 
-//        worldMap.getOldPositionsCopy().clear();
-        worldMap.getOldPositions().clear();
-
         worldMap.getElements().forEach(this::updateElement);
         int countMovedElements = worldMap.getOldPositions().size();
 
         if (countMovedElements == 0) worldMap.setRunning(false);
 
-//        worldMap.getOldPositionsCopy().putAll(worldMap.getOldPositions());
+        worldMap.getOldPositions().clear();
 
     }
 
@@ -48,12 +45,19 @@ public class UpdateElementsManager {
 
             Vector2D oldPosition = element.getPosition();
 
-            double ratio = worldMap.getMovementDistance() / distance;
-            double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
-            double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
+            if (distance != 0) {
 
-            Vector2D updatedPosition = new Vector2D(newX, newY);
-            element.setPosition(updatedPosition);
+                double ratio = worldMap.getMovementDistance() / distance;
+                double newX = Math.round((currPosition.getX() + ratio * deltaX) * 100) / 100.0;
+                double newY = Math.round((currPosition.getY() + ratio * deltaY) * 100) / 100.0;
+
+                Vector2D updatedPosition = new Vector2D(newX, newY);
+                element.setPosition(updatedPosition);
+
+            }
+
+            // else, there is no need to move element, so we do nothing
+
             worldMap.getOldPositions().put(element, oldPosition);
 
         }
