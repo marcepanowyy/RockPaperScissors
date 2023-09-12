@@ -15,13 +15,15 @@ public class UpdateElementsManager {
 
     public void updateElements() {
 
+//        worldMap.getOldPositionsCopy().clear();
+        worldMap.getOldPositions().clear();
+
         worldMap.getElements().forEach(this::updateElement);
         int countMovedElements = worldMap.getOldPositions().size();
 
-        // implement endgame logic
         if (countMovedElements == 0) worldMap.setRunning(false);
 
-        worldMap.getOldPositions().clear();
+//        worldMap.getOldPositionsCopy().putAll(worldMap.getOldPositions());
 
     }
 

@@ -3,8 +3,6 @@ package org.simulation.gui.screen;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -23,40 +21,39 @@ import org.simulation.logic.map.WorldMap;
 import org.simulation.logic.map.builder.WorldMapBuilder;
 import org.simulation.logic.utils.Vector2D;
 
-import java.util.Objects;
+import java.util.*;
 
 public class SimulationScreen extends Application {
 
     ElementFactory elementFactory = new ElementFactory();
 
-    Paper paper1 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(0, 0));
-    Paper paper2 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(0, 9));
-    Paper paper3 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(9, 9));
-    Paper paper4 = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(9, 0));
-
     WorldMap map = new WorldMapBuilder()
-            .movementDistance(0.5)
+            .movementDistance(0.1)
             .width(10)
             .height(10)
-            .battleRange(1)
+            .battleRange(0.5)
             .build();
 
     private final int mapWidth = map.getWidth();
     private final int mapHeight = map.getHeight();
 
     private final int cellSize = 3;
-    private final int imageSize = 40;
+    private final int imageSize = 25;
+
+    private final GridPane mapGrid = createMapGrid();
+
+    private final ArrayList<Node> oldNodes = new ArrayList<>();
+
+    private final Map<ElementEnum, Image> imageBuffer = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) {
 
-        map.getMapElementsManager().addElement(paper1);
-        map.getMapElementsManager().addElement(paper2);
-        map.getMapElementsManager().addElement(paper3);
-        map.getMapElementsManager().addElement(paper4);
-        map.init();
+        preloadImages();
 
-        GridPane mapGrid = createMapGrid();
+        addRandomElementsToMap(5, 5, 5);
+
+        map.init();
 
         VBox gridContainer = new VBox();
         gridContainer.getChildren().add(mapGrid);
@@ -66,50 +63,42 @@ public class SimulationScreen extends Application {
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #dbdbdb");
 
-        updateGrid(mapGrid);
-
         Scene scene = new Scene(root, 800, 475);
 
         primaryStage.setScene(scene);
         primaryStage.show();
 
-    }
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), event -> {
+                    updateGrid();
+                    map.performRound();
+                })
+        );
 
-    private GridPane createMapGrid(){
-
-        GridPane mapGrid = new GridPane();
-
-        for (int x = 0; x < mapWidth * 10; x++) {
-
-            for (int y = 0; y < mapHeight * 10; y++) {
-
-                Pane cell = new Pane();
-                cell.setPrefSize(cellSize, cellSize);
-
-
-                cell.setStyle("-fx-background-color: #9d9d9d;");
-
-                if(x == 0 && y == 0 ) {
-                    cell.setStyle("-fx-background-color: red;");
-                }
-
-                if(x == 2 && y == 2 ) {
-                    cell.setStyle("-fx-background-color: yellow;");
-                }
-
-
-                mapGrid.add(cell, x, mapHeight * 10 - y);
-
-            }
-        }
-
-        return mapGrid;
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
     }
 
-    private void updateGrid(GridPane mapGrid) {
+    private void updateGrid() {
 
-        for (Element element : map.getElements()) {
+        removeOldElements();
+        addNewElements();
+
+    }
+
+    private void removeOldElements(){
+
+        oldNodes.forEach(node -> {
+            mapGrid.getChildren().remove(node);
+        });
+        oldNodes.clear();
+
+    }
+
+    private void addNewElements(){
+
+        map.getElements().forEach(element -> {
 
             int x = (int) (element.getPosition().getX() * 10);
             int y = mapHeight * 10 - (int) (element.getPosition().getY() * 10);
@@ -117,7 +106,7 @@ public class SimulationScreen extends Application {
             Pane cell = new Pane();
             cell.setPrefSize(cellSize, cellSize);
 
-            ImageView imageView = createImageView(element);
+            ImageView imageView = getImageView(element);
 
             assert imageView != null;
 
@@ -133,28 +122,85 @@ public class SimulationScreen extends Application {
             cell.getChildren().add(imageView);
 
             mapGrid.add(cell, x, y);
+            oldNodes.add(cell);
 
+        });
+
+    }
+
+    private GridPane createMapGrid(){
+
+        GridPane mapGrid = new GridPane();
+
+        for (int x = 0; x < mapWidth * 10; x++) {
+
+            for (int y = 0; y < mapHeight * 10; y++) {
+
+                Pane cell = new Pane();
+                cell.setPrefSize(cellSize, cellSize);
+
+                cell.setStyle("-fx-background-color: #9d9d9d;");
+
+                mapGrid.add(cell, x, mapHeight * 10 - y);
+
+            }
+        }
+
+        return mapGrid;
+
+    }
+
+    private ImageView getImageView(Element element) {
+
+        Image image = imageBuffer.get(element.getSymbol());
+
+        if (image != null) {
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(imageSize);
+            imageView.setFitHeight(imageSize);
+
+            return imageView;
+        }
+
+        return null;
+    }
+
+    private void addRandomElementsToMap(int rockCount, int paperCount, int scissorsCount) {
+
+        Random rand = new Random();
+
+        for (int i = 0; i < rockCount; i++) {
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            Rock rock = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(x, y));
+            map.getMapElementsManager().addElement(rock);
+        }
+
+        for (int i = 0; i < paperCount; i++) {
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            Paper paper = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(x, y));
+            map.getMapElementsManager().addElement(paper);
+        }
+
+        for (int i = 0; i < scissorsCount; i++) {
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            Scissors scissors = (Scissors) elementFactory.createElement(ElementEnum.SCISSORS, new Vector2D(x, y));
+            map.getMapElementsManager().addElement(scissors);
         }
     }
 
+    private void preloadImages() {
 
-    private ImageView createImageView(Element element) {
-
-        if (element instanceof Rock) {
-            return new ImageView(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock1.png"))));
-
-        } else if (element instanceof Paper) {
-            return new ImageView(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper1.png"))));
-
-        } else if (element instanceof Scissors) {
-            return new ImageView(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors1.png"))));
-
-        }
-        return null;
+        imageBuffer.put(ElementEnum.ROCK, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock1.png"))));
+        imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper2.png"))));
+        imageBuffer.put(ElementEnum.SCISSORS, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors1.png"))));
 
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }
