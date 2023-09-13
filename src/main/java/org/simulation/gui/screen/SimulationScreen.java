@@ -10,69 +10,54 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.simulation.logic.elements.Element;
-import org.simulation.logic.elements.Paper;
-import org.simulation.logic.elements.Rock;
-import org.simulation.logic.elements.Scissors;
 import org.simulation.logic.enums.ElementEnum;
-import org.simulation.logic.factory.ElementFactory;
 import org.simulation.logic.map.WorldMap;
-import org.simulation.logic.map.builder.WorldMapBuilder;
-import org.simulation.logic.utils.Vector2D;
 
 import java.util.*;
 
 public class SimulationScreen extends Application {
 
-    ElementFactory elementFactory = new ElementFactory();
-
-    WorldMap map = new WorldMapBuilder()
-            .movementDistance(0.05)
-            .width(15)
-            .height(10)
-            .battleRange(0.5)
-            .build();
-
-    private final int mapWidth = map.getWidth();
-
-    private final int mapHeight = map.getHeight();
+    private Stage primaryStage;
 
     private final int cellSize = 4;
 
     private final int imageSize = 35;
 
-    private final GridPane mapGrid = createMapGrid();
+    private final WorldMap map;
+
+    private GridPane mapGrid;
+
+    private Timeline timeline;
 
     private final ArrayList<Node> oldNodes = new ArrayList<>();
 
     private final Map<ElementEnum, Image> imageBuffer = new HashMap<>();
 
-    private Timeline timeline;
+    public SimulationScreen(WorldMap worldMap) {
 
-    private Stage primaryStage;
+        this.map = worldMap;
+        createMapGrid();
+        preloadImages();
+
+    }
 
     @Override
     public void start(Stage primaryStage) {
 
         this.primaryStage = primaryStage;
-        preloadImages();
 
-        int scissorsCount = 10;
-        int rockCount = 10;
-        int paperCount = 10;
+        VBox gridBox = new VBox();
+        gridBox.getChildren().add(mapGrid);
+        gridBox.setAlignment(Pos.CENTER);
 
-        addRandomElementsToMap(rockCount, paperCount, scissorsCount);
-
-        map.init();
-
-        VBox gridContainer = new VBox();
-        gridContainer.getChildren().add(mapGrid);
-        gridContainer.setAlignment(Pos.CENTER);
-
-        HBox root = new HBox(gridContainer);
+        HBox root = new HBox(gridBox);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: lightgray");
 
@@ -109,6 +94,7 @@ public class SimulationScreen extends Application {
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
     }
 
     private void updateGrid() {
@@ -130,7 +116,7 @@ public class SimulationScreen extends Application {
         map.getElements().forEach(element -> {
 
             int x = (int) (element.getPosition().getX() * 10);
-            int y = mapHeight * 10 - (int) (element.getPosition().getY() * 10);
+            int y = map.getHeight() * 10 - (int) (element.getPosition().getY() * 10);
 
             Pane cell = new Pane();
             cell.setPrefSize(cellSize, cellSize);
@@ -156,21 +142,21 @@ public class SimulationScreen extends Application {
         });
     }
 
-    private GridPane createMapGrid() {
+    private void createMapGrid() {
 
-        GridPane mapGrid = new GridPane();
+        mapGrid = new GridPane();
 
-        for (int x = 0; x < mapWidth * 10; x++) {
-            for (int y = 0; y < mapHeight * 10; y++) {
+        for (int x = 0; x < map.getWidth() * 10; x++) {
+            for (int y = 0; y < map.getHeight() * 10; y++) {
 
                 Pane cell = new Pane();
                 cell.setPrefSize(cellSize, cellSize);
-                mapGrid.add(cell, x, mapHeight * 10 - y);
+                mapGrid.add(cell, x, map.getHeight() * 10 - y);
 
             }
         }
 
-        return mapGrid;
+        mapGrid.setStyle("-fx-border-color: black");
 
     }
 
@@ -183,42 +169,12 @@ public class SimulationScreen extends Application {
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(imageSize);
             imageView.setFitHeight(imageSize);
+
             return imageView;
 
         }
 
         return null;
-    }
-
-    private void addRandomElementsToMap(int rockCount, int paperCount, int scissorsCount) {
-        Random rand = new Random();
-
-        for (int i = 0; i < rockCount; i++) {
-
-            double x = rand.nextDouble() * mapWidth;
-            double y = rand.nextDouble() * mapHeight;
-            Rock rock = (Rock) elementFactory.createElement(ElementEnum.ROCK, new Vector2D(x, y));
-            map.getMapElementsManager().addElement(rock);
-
-        }
-
-        for (int i = 0; i < paperCount; i++) {
-
-            double x = rand.nextDouble() * mapWidth;
-            double y = rand.nextDouble() * mapHeight;
-            Paper paper = (Paper) elementFactory.createElement(ElementEnum.PAPER, new Vector2D(x, y));
-            map.getMapElementsManager().addElement(paper);
-
-        }
-
-        for (int i = 0; i < scissorsCount; i++) {
-
-            double x = rand.nextDouble() * mapWidth;
-            double y = rand.nextDouble() * mapHeight;
-            Scissors scissors = (Scissors) elementFactory.createElement(ElementEnum.SCISSORS, new Vector2D(x, y));
-            map.getMapElementsManager().addElement(scissors);
-
-        }
     }
 
     private void preloadImages() {
@@ -230,11 +186,14 @@ public class SimulationScreen extends Application {
     }
 
     private void showSimulationCompleteAlert() {
+
         Platform.runLater(() -> {
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Simulation has ended. Winner element: " + map.getElements().get(0).getSymbol());
             alert.showAndWait();
+
         });
     }
 

@@ -14,15 +14,28 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.simulation.gui.helper.Setting;
 import org.simulation.gui.helper.SettingsLoader;
+import org.simulation.logic.elements.Element;
+import org.simulation.logic.enums.ElementEnum;
+import org.simulation.logic.factory.ElementFactory;
+import org.simulation.logic.map.WorldMap;
+import org.simulation.logic.map.builder.WorldMapBuilder;
+import org.simulation.logic.utils.Vector2D;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SettingsScreen extends Application {
 
+    private Stage primaryStage;
+
     private final int imageSize = 80;
+
+    private final Random rand = new Random();
+
+    private final Map<String, TextField> inputFields = new HashMap<>();
+
+    private final Map<String, Setting> settings = new SettingsLoader(imageSize).getSettingProperties();
+
+    private final ElementFactory elementFactory = new ElementFactory();
 
     private static final String[] settingNames = {
 
@@ -35,25 +48,6 @@ public class SettingsScreen extends Application {
 
     };
 
-    private Stage primaryStage;
-
-    private final Map<String, Setting> settings = new SettingsLoader(imageSize).getSettingProperties();
-
-    private final Map<String, TextField> inputFields = new HashMap<>();
-
-    @Override
-    public void start(Stage primaryStage) {
-
-        this.primaryStage = primaryStage;
-
-        VBox root = createRootBox();
-
-        Scene scene = new Scene(root, 800, 475);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-    }
 
     private VBox createRootBox(){
 
@@ -228,10 +222,29 @@ public class SettingsScreen extends Application {
 
     private void openSimulationScreen() {
 
-        SimulationScreen simulationScreen = new SimulationScreen();
-
         try {
+
+            int width = Integer.parseInt(inputFields.get("size").getText());
+            int height = Integer.parseInt(inputFields.get("size").getText());
+            double movementDistance = Double.parseDouble(inputFields.get("speed").getText());
+            double battleRange = Double.parseDouble(inputFields.get("range").getText());
+
+            WorldMap worldMap = new WorldMapBuilder()
+                    .width(width)
+                    .height(height)
+                    .movementDistance(movementDistance)
+                    .battleRange(battleRange)
+                    .build();
+
+            int rockCount = Integer.parseInt(inputFields.get("rock").getText());
+            int paperCount = Integer.parseInt(inputFields.get("paper").getText());
+            int scissorsCount = Integer.parseInt(inputFields.get("scissors").getText());
+
+            addRandomElementsToMap(worldMap, rockCount, paperCount, scissorsCount);
+
+            SimulationScreen simulationScreen = new SimulationScreen(worldMap);
             simulationScreen.start(primaryStage);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -315,6 +328,41 @@ public class SettingsScreen extends Application {
             default -> Double.MAX_VALUE;
 
         };
+    }
+
+    private void addRandomElementsToMap(WorldMap worldMap, int rockCount, int paperCount, int scissorsCount) {
+
+        addElementsToMap(worldMap, ElementEnum.ROCK, rockCount);
+        addElementsToMap(worldMap, ElementEnum.PAPER, paperCount);
+        addElementsToMap(worldMap, ElementEnum.SCISSORS, scissorsCount);
+
+    }
+
+    private void addElementsToMap(WorldMap worldMap, ElementEnum symbol, int elementCount){
+
+        for (int i = 0; i < elementCount; i ++){
+
+            double x = rand.nextDouble() * worldMap.getWidth();
+            double y = rand.nextDouble() * worldMap.getHeight();
+            Element element = elementFactory.createElement(symbol, new Vector2D(x, y));
+            worldMap.getMapElementsManager().addElement(element);
+
+        }
+
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        this.primaryStage = primaryStage;
+
+        VBox root = createRootBox();
+
+        Scene scene = new Scene(root, 800, 475);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
     }
 
     public static void main(String[] args) {
