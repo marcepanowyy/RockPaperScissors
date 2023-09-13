@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,6 +15,9 @@ import javafx.stage.Stage;
 import org.simulation.gui.helper.Setting;
 import org.simulation.gui.helper.SettingsLoader;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SettingsScreen extends Application {
@@ -31,15 +35,18 @@ public class SettingsScreen extends Application {
 
     };
 
+    private Stage primaryStage;
 
     private final Map<String, Setting> settings = new SettingsLoader(imageSize).getSettingProperties();
+
+    private final Map<String, TextField> inputFields = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) {
 
+        this.primaryStage = primaryStage;
 
         VBox root = createRootBox();
-        root.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(root, 800, 475);
 
@@ -110,7 +117,7 @@ public class SettingsScreen extends Application {
 
     private HBox createSettingBox(Setting setting) {
 
-        VBox titleAndDescriptionAndInput = createBoxWithTitleAndDescriptionAndInput(setting.getTitle(), setting.getDescription(), setting.getInput());
+        VBox titleAndDescriptionAndInput = createBoxWithTitleAndDescriptionAndInput(setting);
         HBox imageBox = createBoxWithImage(setting.getImageView());
         HBox settingBox = new HBox(imageBox, titleAndDescriptionAndInput);
 
@@ -121,11 +128,11 @@ public class SettingsScreen extends Application {
 
     }
 
-    private VBox createBoxWithTitleAndDescriptionAndInput(String title, String description, String input) {
+    private VBox createBoxWithTitleAndDescriptionAndInput(Setting setting) {
 
-        HBox titleBox = createBoxWithTitle(title);
-        HBox descriptionBox = createBoxWithDescription(description);
-        HBox inputBox = createBoxWithInput(input);
+        HBox titleBox = createBoxWithTitle(setting.getTitle());
+        HBox descriptionBox = createBoxWithDescription(setting.getDescription());
+        HBox inputBox = createBoxWithInput(setting.getName(), setting.getInput());
 
         VBox titleAndDescriptionAndInput = new VBox(titleBox, descriptionBox, inputBox);
 
@@ -175,7 +182,7 @@ public class SettingsScreen extends Application {
 
     }
 
-    private HBox createBoxWithInput(String input) {
+    private HBox createBoxWithInput(String name, String input) {
 
         TextField textField = new TextField();
         textField.setPromptText(input);
@@ -187,6 +194,8 @@ public class SettingsScreen extends Application {
 
         inputBox.setAlignment(Pos.CENTER);
 
+        inputFields.put(name, textField);
+
         return inputBox;
     }
 
@@ -196,6 +205,18 @@ public class SettingsScreen extends Application {
         startButton.setMinWidth(150);
         startButton.setPadding(new Insets(5));
 
+        startButton.setOnAction(event -> {
+
+            List<String> invalidParams = getInvalidParams();
+
+            if (invalidParams.isEmpty()) {
+                openSimulationScreen();
+            } else {
+                showAlertWithInvalidParams(invalidParams);
+            }
+
+        });
+
         HBox startButtonBox = new HBox(startButton);
 
         startButtonBox.setAlignment(Pos.CENTER);
@@ -203,6 +224,97 @@ public class SettingsScreen extends Application {
 
         return new HBox(startButtonBox);
 
+    }
+
+    private void openSimulationScreen() {
+
+        SimulationScreen simulationScreen = new SimulationScreen();
+
+        try {
+            simulationScreen.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<String> getInvalidParams() {
+
+        List<String> invalidParams = new ArrayList<>();
+
+        for (Map.Entry<String, TextField> entry : inputFields.entrySet()) {
+
+            String settingName = entry.getKey();
+            String inputValue = entry.getValue().getText();
+
+            try {
+
+                double value = Double.parseDouble(inputValue);
+                double minValue = getMinValue(settingName);
+                double maxValue = getMaxValue(settingName);
+
+                if (value < minValue || value > maxValue) {
+
+                    invalidParams.add(settingName);
+
+                }
+
+            } catch (NumberFormatException e) {
+
+                invalidParams.add(settingName);
+
+            }
+        }
+
+        return invalidParams;
+
+    }
+
+    private void showAlertWithInvalidParams(List<String> invalidParams) {
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Parameters");
+        alert.setHeaderText(null);
+
+        StringBuilder contentText = new StringBuilder("Invalid input values for the following parameters:\n");
+
+        for (String param : invalidParams) {
+
+            contentText.append(param).append(": ");
+            contentText.append("min: ").append(getMinValue(param)).append(", max: ").append(getMaxValue(param)).append("\n");
+
+        }
+
+        contentText.append("Please check the input values and try again.");
+        alert.setContentText(contentText.toString());
+
+        alert.showAndWait();
+
+    }
+
+    private double getMinValue(String paramName) {
+
+        return switch (paramName) {
+
+            case "rock", "paper", "scissors" -> 0;
+            case "speed" -> 0.1;
+            case "range" -> 0.5;
+            case "size" -> 5;
+            default -> Double.MIN_VALUE;
+
+        };
+    }
+
+    private double getMaxValue(String paramName) {
+
+        return switch (paramName) {
+
+            case "rock", "paper", "scissors" -> 20;
+            case "speed" -> 0.5;
+            case "range" -> 2;
+            case "size" -> 12;
+            default -> Double.MAX_VALUE;
+
+        };
     }
 
     public static void main(String[] args) {

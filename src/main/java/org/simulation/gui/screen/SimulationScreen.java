@@ -44,7 +44,7 @@ public class SimulationScreen extends Application {
 
     private final int imageSize = 35;
 
-    private GridPane mapGrid = createMapGrid();
+    private final GridPane mapGrid = createMapGrid();
 
     private final ArrayList<Node> oldNodes = new ArrayList<>();
 
@@ -52,9 +52,12 @@ public class SimulationScreen extends Application {
 
     private Timeline timeline;
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
 
+        this.primaryStage = primaryStage;
         preloadImages();
 
         int scissorsCount = 10;
