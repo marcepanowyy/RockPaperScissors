@@ -1,89 +1,135 @@
 package org.simulation.gui.screen;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import java.io.InputStream;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class SettingsScreen extends Application {
 
-    private ImageView selectedImageView = null;
     private final int imageSize = 80;
-    private final int cellSize = 30;
-    private boolean isCopying = false;
+
+    private static final String[] settingNames = {
+
+            "measure",
+            "radar",
+            "run",
+            "rock",
+            "paper",
+            "scissors",
+    };
+
+
+    private final Map<String, Map<String, Object>> settings = new SettingsLoader(imageSize).loadSettingProperties();
 
     @Override
     public void start(Stage primaryStage) {
 
-        InputStream img1Stream = getClass().getClassLoader().getResourceAsStream("rock1.png");
-        InputStream img2Stream = getClass().getClassLoader().getResourceAsStream("paper1.png");
-        InputStream img3Stream = getClass().getClassLoader().getResourceAsStream("scissors1.png");
 
-        assert img1Stream != null;
-        assert img2Stream != null;
-        assert img3Stream != null;
-
-        Image img1 = new Image(img1Stream);
-        Image img2 = new Image(img2Stream);
-        Image img3 = new Image(img3Stream);
-
-        GridPane mapGrid = new GridPane();
-        mapGrid.setHgap(2);
-        mapGrid.setVgap(2);
-        mapGrid.setPadding(new Insets(10));
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                Pane cell = new Pane();
-                cell.setMinSize(cellSize, cellSize);
-                cell.setStyle("-fx-background-color: lightgray;");
-                mapGrid.add(cell, j, i);
-            }
-        }
-
-        VBox gridContainer = new VBox();
-        gridContainer.getChildren().add(mapGrid);
-        gridContainer.setAlignment(Pos.CENTER);
-        gridContainer.setSpacing(20);
-        gridContainer.setFillWidth(true);
-
-        VBox imageContainer = new VBox();
-        imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setSpacing(20);
-
-        ImageView imageView1 = new ImageView(img1);
-        ImageView imageView2 = new ImageView(img2);
-        ImageView imageView3 = new ImageView(img3);
-
-        imageView1.setFitWidth(imageSize);
-        imageView1.setPreserveRatio(true);
-        imageView2.setFitWidth(imageSize);
-        imageView2.setPreserveRatio(true);
-        imageView3.setFitWidth(imageSize);
-        imageView3.setPreserveRatio(true);
-
-        imageContainer.getChildren().addAll(imageView1, imageView2, imageView3);
-
-        HBox root = new HBox(gridContainer, imageContainer);
+        VBox root = createRootBox();
         root.setAlignment(Pos.CENTER);
-        root.setSpacing(50);
+
 
         Scene scene = new Scene(root, 800, 475);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
+    private VBox createRootBox(){
+
+        HBox titleLabelBox = createTitleLabelBox();
+        HBox settingsBox = createSettingsBox();
+
+        return new VBox(titleLabelBox, settingsBox);
+
+    }
+
+    private HBox createTitleLabelBox(){
+
+        Label label = new Label("GLOWNY OPIS");
+        return new HBox(label);
+
+    }
+
+    private HBox createSettingsBox(){
+
+        VBox column0 = createSettingsColumnBox(0);
+        VBox column1 = createSettingsColumnBox(1);
+        return new HBox(column0, column1);
+
+    }
+
+    private VBox createSettingsColumnBox(int column){
+
+        int startIndex = (column == 0) ? 0 : 3;
+        int endIndex = (column == 0) ? 2 : 5;
+
+        VBox settingColumn = new VBox();
+
+        for (int i = startIndex; i <= endIndex; i++) {
+
+            String settingName = settingNames[i];
+            HBox settingBox = createSettingBox(settingName);
+            settingColumn.getChildren().add(settingBox);
+        }
+
+        return settingColumn;
+
+    }
+
+    private HBox createSettingBox(String settingName){
+
+        VBox descriptionAndInputBox = createBoxWithDescriptionAndInput(settingName);
+        HBox imageBox = createBoxWithImage(settingName);
+        return new HBox(imageBox, descriptionAndInputBox);
+
+    }
+
+    private VBox createBoxWithDescriptionAndInput(String settingName){
+
+        HBox imageBox = createBoxWithDescription(settingName);
+        HBox inputBox = createBoxWithInput(settingName);
+
+        return new VBox(imageBox, inputBox);
+
+    }
+
+    private HBox createBoxWithImage(String settingName){
+
+        ImageView imageView = (ImageView) settings.get(settingName).get("image");
+        return new HBox(imageView);
+
+    }
+
+    private HBox createBoxWithDescription(String settingName){
+
+        String description = (String) settings.get(settingName).get("description");
+        Label label = new Label(description);
+        return new HBox(label);
+
+    }
+
+    // change to input
+
+    private HBox createBoxWithInput(String settingName){
+
+        String description = (String) settings.get(settingName).get("input");
+        Label label = new Label(description);
+        return new HBox(label);
+
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

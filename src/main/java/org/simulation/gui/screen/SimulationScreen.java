@@ -30,10 +30,10 @@ public class SimulationScreen extends Application {
     ElementFactory elementFactory = new ElementFactory();
 
     WorldMap map = new WorldMapBuilder()
-            .movementDistance(0.1)
-            .width(10)
+            .movementDistance(0.05)
+            .width(15)
             .height(10)
-            .battleRange(1)
+            .battleRange(0.5)
             .build();
 
     private final int mapWidth = map.getWidth();
@@ -44,7 +44,7 @@ public class SimulationScreen extends Application {
 
     private final int imageSize = 35;
 
-    private final GridPane mapGrid = createMapGrid();
+    private GridPane mapGrid = createMapGrid();
 
     private final ArrayList<Node> oldNodes = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class SimulationScreen extends Application {
 
         HBox root = new HBox(gridContainer);
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #dbdbdb");
+        root.setStyle("-fx-background-color: lightgray");
 
         Scene scene = new Scene(root, 800, 475);
 
@@ -117,12 +117,7 @@ public class SimulationScreen extends Application {
 
     private void removeOldElements() {
 
-        oldNodes.forEach(node -> {
-
-            mapGrid.getChildren().remove(node);
-
-        });
-
+        oldNodes.forEach(node -> mapGrid.getChildren().remove(node));
         oldNodes.clear();
 
     }
@@ -224,16 +219,18 @@ public class SimulationScreen extends Application {
     }
 
     private void preloadImages() {
-        imageBuffer.put(ElementEnum.ROCK, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock1.png"))));
-        imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper1.png"))));
-        imageBuffer.put(ElementEnum.SCISSORS, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors1.png"))));
+
+        imageBuffer.put(ElementEnum.ROCK, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("rock.png"))));
+        imageBuffer.put(ElementEnum.PAPER, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("paper.png"))));
+        imageBuffer.put(ElementEnum.SCISSORS, new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("scissors.png"))));
+
     }
 
     private void showSimulationCompleteAlert() {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText("Simulation has ended");
+            alert.setContentText("Simulation has ended. Winner element: " + map.getElements().get(0).getSymbol());
             alert.showAndWait();
         });
     }
@@ -241,4 +238,5 @@ public class SimulationScreen extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
