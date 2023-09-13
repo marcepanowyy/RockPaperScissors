@@ -1,16 +1,20 @@
 package org.simulation.gui.screen;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.simulation.gui.helper.Setting;
+import org.simulation.gui.helper.SettingsLoader;
 
-import java.util.HashMap;
 import java.util.Map;
-
 
 public class SettingsScreen extends Application {
 
@@ -18,16 +22,17 @@ public class SettingsScreen extends Application {
 
     private static final String[] settingNames = {
 
-            "measure",
-            "radar",
-            "run",
+            "size",
+            "range",
+            "speed",
             "rock",
             "paper",
             "scissors",
+
     };
 
 
-    private final Map<String, Map<String, Object>> settings = new SettingsLoader(imageSize).loadSettingProperties();
+    private final Map<String, Setting> settings = new SettingsLoader(imageSize).getSettingProperties();
 
     @Override
     public void start(Stage primaryStage) {
@@ -35,7 +40,6 @@ public class SettingsScreen extends Application {
 
         VBox root = createRootBox();
         root.setAlignment(Pos.CENTER);
-
 
         Scene scene = new Scene(root, 800, 475);
 
@@ -48,15 +52,28 @@ public class SettingsScreen extends Application {
 
         HBox titleLabelBox = createTitleLabelBox();
         HBox settingsBox = createSettingsBox();
+        HBox proceedButtonBox = createStartSimulationBox();
 
-        return new VBox(titleLabelBox, settingsBox);
+        VBox root = new VBox(titleLabelBox, settingsBox, proceedButtonBox);
+
+        root.setAlignment(Pos.CENTER);
+        root.setSpacing(20);
+        root.setPadding(new Insets(15));
+
+        return root;
 
     }
 
     private HBox createTitleLabelBox(){
 
-        Label label = new Label("GLOWNY OPIS");
-        return new HBox(label);
+        Label label = new Label("Establish Your Ideal Map Preferences!");
+        label.setFont(Font.font("Comic Sans MS", 24));
+
+        HBox titleLabelBox = new HBox(label);
+
+        titleLabelBox.setAlignment(Pos.CENTER);
+
+        return titleLabelBox;
 
     }
 
@@ -64,7 +81,12 @@ public class SettingsScreen extends Application {
 
         VBox column0 = createSettingsColumnBox(0);
         VBox column1 = createSettingsColumnBox(1);
-        return new HBox(column0, column1);
+
+        HBox settingsBox = new HBox(column0, column1);
+
+        settingsBox.setAlignment(Pos.CENTER);
+
+        return settingsBox;
 
     }
 
@@ -78,7 +100,7 @@ public class SettingsScreen extends Application {
         for (int i = startIndex; i <= endIndex; i++) {
 
             String settingName = settingNames[i];
-            HBox settingBox = createSettingBox(settingName);
+            HBox settingBox = createSettingBox(settings.get(settingName));
             settingColumn.getChildren().add(settingBox);
         }
 
@@ -86,45 +108,100 @@ public class SettingsScreen extends Application {
 
     }
 
-    private HBox createSettingBox(String settingName){
+    private HBox createSettingBox(Setting setting) {
 
-        VBox descriptionAndInputBox = createBoxWithDescriptionAndInput(settingName);
-        HBox imageBox = createBoxWithImage(settingName);
-        return new HBox(imageBox, descriptionAndInputBox);
+        VBox titleAndDescriptionAndInput = createBoxWithTitleAndDescriptionAndInput(setting.getTitle(), setting.getDescription(), setting.getInput());
+        HBox imageBox = createBoxWithImage(setting.getImageView());
+        HBox settingBox = new HBox(imageBox, titleAndDescriptionAndInput);
 
-    }
+        settingBox.setMaxWidth(400);
+        settingBox.setAlignment(Pos.CENTER);
 
-    private VBox createBoxWithDescriptionAndInput(String settingName){
-
-        HBox imageBox = createBoxWithDescription(settingName);
-        HBox inputBox = createBoxWithInput(settingName);
-
-        return new VBox(imageBox, inputBox);
+        return settingBox;
 
     }
 
-    private HBox createBoxWithImage(String settingName){
+    private VBox createBoxWithTitleAndDescriptionAndInput(String title, String description, String input) {
 
-        ImageView imageView = (ImageView) settings.get(settingName).get("image");
-        return new HBox(imageView);
+        HBox titleBox = createBoxWithTitle(title);
+        HBox descriptionBox = createBoxWithDescription(description);
+        HBox inputBox = createBoxWithInput(input);
+
+        VBox titleAndDescriptionAndInput = new VBox(titleBox, descriptionBox, inputBox);
+
+        titleAndDescriptionAndInput.setAlignment(Pos.CENTER);
+        return titleAndDescriptionAndInput;
 
     }
 
-    private HBox createBoxWithDescription(String settingName){
+    private HBox createBoxWithImage(ImageView imageView) {
 
-        String description = (String) settings.get(settingName).get("description");
+        HBox imageBox = new HBox(imageView);
+
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setPadding(new Insets(15));
+
+        return imageBox;
+    }
+
+    private HBox createBoxWithTitle(String title) {
+
+        Label label = new Label(title);
+
+        label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 14;");
+
+        HBox descriptionBox = new HBox(label);
+
+        descriptionBox.setAlignment(Pos.CENTER);
+
+        return descriptionBox;
+
+
+    }
+
+    private HBox createBoxWithDescription(String description) {
+
         Label label = new Label(description);
-        return new HBox(label);
+
+        label.setWrapText(true);
+        label.setAlignment(Pos.CENTER);
+
+        HBox descriptionBox = new HBox(label);
+
+        descriptionBox.setAlignment(Pos.CENTER);
+        descriptionBox.setPadding(new Insets(7, 0, 10, 0));
+
+        return descriptionBox;
 
     }
 
-    // change to input
+    private HBox createBoxWithInput(String input) {
 
-    private HBox createBoxWithInput(String settingName){
+        TextField textField = new TextField();
+        textField.setPromptText(input);
+        textField.setText(input);
 
-        String description = (String) settings.get(settingName).get("input");
-        Label label = new Label(description);
-        return new HBox(label);
+        textField.setAlignment(Pos.CENTER);
+
+        HBox inputBox = new HBox(textField);
+
+        inputBox.setAlignment(Pos.CENTER);
+
+        return inputBox;
+    }
+
+    private HBox createStartSimulationBox(){
+
+        Button startButton = new Button("Start Simulation!");
+        startButton.setMinWidth(150);
+        startButton.setPadding(new Insets(5));
+
+        HBox startButtonBox = new HBox(startButton);
+
+        startButtonBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(startButtonBox, Priority.ALWAYS);
+
+        return new HBox(startButtonBox);
 
     }
 

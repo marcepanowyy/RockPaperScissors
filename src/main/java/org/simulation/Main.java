@@ -1,7 +1,7 @@
 package org.simulation;
 
 import javafx.application.Application;
-import org.simulation.gui.App;
+//import org.simulation.gui.App;
 import org.simulation.logic.elements.Paper;
 import org.simulation.logic.elements.Rock;
 import org.simulation.logic.elements.Scissors;
