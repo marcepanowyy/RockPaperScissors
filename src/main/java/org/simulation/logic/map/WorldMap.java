@@ -46,22 +46,6 @@ public class WorldMap {
         this.battleRange = battleRange;
     }
 
-    public void startSimulation(){
-
-        init();
-
-        while (running){
-            performRound();
-        }
-
-        System.out.println("Simulation has ended.");
-
-    }
-
-    public void init(){
-        findOpponentsManager.findOpponents();
-    }
-
     public void performRound(){
 
         checkForBattlesManager.checkForBattles();  // check for battles (add them to special map)

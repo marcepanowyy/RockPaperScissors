@@ -7,7 +7,7 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -25,6 +25,8 @@ import java.util.*;
 public class SimulationScreen extends Application {
 
     private Stage primaryStage;
+
+    final double keyFrameTimestamp = 0.25;
 
     private final int cellSize = 4;
 
@@ -45,55 +47,6 @@ public class SimulationScreen extends Application {
         this.map = worldMap;
         createMapGrid();
         preloadImages();
-
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-
-        this.primaryStage = primaryStage;
-
-        VBox gridBox = new VBox();
-        gridBox.getChildren().add(mapGrid);
-        gridBox.setAlignment(Pos.CENTER);
-
-        HBox root = new HBox(gridBox);
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: lightgray");
-
-        Scene scene = new Scene(root, 800, 475);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        Thread simulationThread = new Thread(this::startSimulation);
-
-        // set the thread as a daemon to terminate it along with the main thread
-        simulationThread.setDaemon(true);
-        simulationThread.start();
-
-    }
-
-    private void startSimulation() {
-
-        timeline = new Timeline(
-
-                new KeyFrame(Duration.seconds(0.3), event -> {
-
-                    updateGrid();
-                    map.performRound();
-
-                    if (!map.isRunning()) {
-
-                        Platform.runLater(this::showSimulationCompleteAlert);
-                        timeline.stop();
-
-                    }
-                })
-        );
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
 
     }
 
@@ -189,16 +142,78 @@ public class SimulationScreen extends Application {
 
         Platform.runLater(() -> {
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Simulation has ended. Winner element: " + map.getElements().get(0).getSymbol());
-            alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.NONE);
 
+            Label label = new Label("Simulation has ended. Winner element: " + map.getElements().get(0).getSymbol());
+
+
+            label.setStyle("-fx-padding: 5 0 0 -10");
+
+
+            VBox vbox = new VBox(label);
+            vbox.setAlignment(Pos.CENTER);
+
+            ButtonType returnToStartScreenButton = new ButtonType("Return to Start Screen", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().add(returnToStartScreenButton);
+
+            alert.getDialogPane().setContent(vbox);
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == returnToStartScreenButton) {
+                StartScreen startScreen = new StartScreen();
+                startScreen.start(primaryStage);
+
+            }
         });
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    @Override
+    public void start(Stage primaryStage) {
+
+        this.primaryStage = primaryStage;
+
+        VBox gridBox = new VBox();
+        gridBox.getChildren().add(mapGrid);
+        gridBox.setAlignment(Pos.CENTER);
+
+        HBox root = new HBox(gridBox);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-background-color: lightgray");
+
+        Scene scene = new Scene(root, 800, 475);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        Thread simulationThread = new Thread(this::startSimulation);
+
+        // set the thread as a daemon to terminate it along with the main thread
+        simulationThread.setDaemon(true);
+        simulationThread.start();
+
     }
 
+    private void startSimulation() {
+
+        timeline = new Timeline(
+
+                new KeyFrame(Duration.seconds(keyFrameTimestamp), event -> {
+
+                    updateGrid();
+                    map.performRound();
+
+                    if (!map.isRunning()) {
+
+                        Platform.runLater(this::showSimulationCompleteAlert);
+                        timeline.stop();
+
+                    }
+                })
+        );
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
+    }
 }

@@ -48,7 +48,6 @@ public class SettingsScreen extends Application {
 
     };
 
-
     private VBox createRootBox(){
 
         HBox titleLabelBox = createTitleLabelBox();
@@ -58,7 +57,7 @@ public class SettingsScreen extends Application {
         VBox root = new VBox(titleLabelBox, settingsBox, proceedButtonBox);
 
         root.setAlignment(Pos.CENTER);
-        root.setSpacing(20);
+        root.setSpacing(15);
         root.setPadding(new Insets(15));
 
         return root;
@@ -68,7 +67,7 @@ public class SettingsScreen extends Application {
     private HBox createTitleLabelBox(){
 
         Label label = new Label("Establish Your Ideal Map Preferences!");
-        label.setFont(Font.font("Comic Sans MS", 24));
+        label.setFont(Font.font(26));
 
         HBox titleLabelBox = new HBox(label);
 
@@ -149,14 +148,13 @@ public class SettingsScreen extends Application {
 
         Label label = new Label(title);
 
-        label.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 14;");
+        label.setFont(Font.font(20));
 
         HBox descriptionBox = new HBox(label);
 
         descriptionBox.setAlignment(Pos.CENTER);
 
         return descriptionBox;
-
 
     }
 
@@ -195,7 +193,7 @@ public class SettingsScreen extends Application {
 
     private HBox createStartSimulationBox(){
 
-        Button startButton = new Button("Start Simulation!");
+        Button startButton = new Button("Start Simulation");
         startButton.setMinWidth(150);
         startButton.setPadding(new Insets(5));
 
@@ -246,7 +244,7 @@ public class SettingsScreen extends Application {
             simulationScreen.start(primaryStage);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Error while opening the simulation screen: " + e.getMessage());
         }
     }
 
@@ -364,9 +362,4 @@ public class SettingsScreen extends Application {
         primaryStage.show();
 
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }
