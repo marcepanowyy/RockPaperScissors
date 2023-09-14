@@ -1,6 +1,7 @@
 package org.simulation.gui.screen;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -43,7 +44,8 @@ public class StartScreen extends Application {
 
         Button startButton = new Button("Let's get started");
 
-        startButton.setStyle("-fx-font-size: 14px; -fx-padding: 6px 12px");
+        startButton.setMinWidth(150);
+        startButton.setPadding(new Insets(5));
 
         startButton.setOnAction(e -> {
             SettingsScreen settingsScreen = new SettingsScreen();
@@ -54,10 +56,7 @@ public class StartScreen extends Application {
 
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-
-        this.primaryStage = primaryStage;
+    private VBox createRootBox(){
 
         ImageView startImageView = createImageView();
         Label titleLabel = createTitleLabel();
@@ -67,6 +66,17 @@ public class StartScreen extends Application {
 
         root.setAlignment(Pos.CENTER);
         root.setSpacing(10);
+
+        return root;
+
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        this.primaryStage = primaryStage;
+
+        VBox root = createRootBox();
 
         Scene scene = new Scene(root, 800, 475);
         primaryStage.setScene(scene);

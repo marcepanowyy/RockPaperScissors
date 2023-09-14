@@ -15,10 +15,10 @@ import javafx.stage.Stage;
 import org.simulation.gui.helper.Setting;
 import org.simulation.gui.helper.SettingsLoader;
 import org.simulation.logic.element.Element;
-import org.simulation.logic.enuM.ElementEnum;
-import org.simulation.logic.element.factory.ElementFactory;
+import org.simulation.logic.enums.ElementEnum;
+import org.simulation.logic.factory.ElementFactory;
 import org.simulation.logic.map.WorldMap;
-import org.simulation.logic.map.builder.WorldMapBuilder;
+import org.simulation.logic.builder.WorldMapBuilder;
 import org.simulation.logic.utils.Vector2D;
 
 import java.util.*;

@@ -45,7 +45,7 @@ public class SettingsLoader {
                 "range",
                 "Battle Range",
                 "Define the combat distance between elements",
-                "1",
+                "0.8",
                 loadImage("range.png")
         );
 
@@ -53,7 +53,7 @@ public class SettingsLoader {
                 "speed",
                 "Movement Speed",
                 "Set the speed at which elements move",
-                "0.2",
+                "0.15",
                 loadImage("speed.png")
 
         );

@@ -1,4 +1,4 @@
-package org.simulation.logic.map.builder;
+package org.simulation.logic.builder;
 
 import org.simulation.logic.map.WorldMap;
 

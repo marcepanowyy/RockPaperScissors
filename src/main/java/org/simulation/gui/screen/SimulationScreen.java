@@ -1,9 +1,11 @@
 package org.simulation.gui.screen;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -17,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.simulation.logic.element.Element;
-import org.simulation.logic.enuM.ElementEnum;
+import org.simulation.logic.enums.ElementEnum;
 import org.simulation.logic.map.WorldMap;
 
 import java.util.*;
@@ -26,11 +28,11 @@ public class SimulationScreen extends Application {
 
     private Stage primaryStage;
 
-    final double keyFrameTimestamp = 0.25;
+    final double keyFrameTimestamp = 0.2;
 
     private final int cellSize = 4;
 
-    private final int imageSize = 35;
+    private final int imageSize = 32;
 
     private final WorldMap map;
 
@@ -109,7 +111,8 @@ public class SimulationScreen extends Application {
             }
         }
 
-        mapGrid.setStyle("-fx-border-color: black");
+        mapGrid.setPadding(new Insets((double) imageSize / 2));
+        mapGrid.setStyle("-fx-border-color: rgba(0,0,0,0.55)");
 
     }
 
@@ -178,8 +181,9 @@ public class SimulationScreen extends Application {
         gridBox.setAlignment(Pos.CENTER);
 
         HBox root = new HBox(gridBox);
+
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: lightgray");
+        root.setStyle("-fx-background-color: #f3f3f3");
 
         Scene scene = new Scene(root, 800, 475);
 
@@ -205,7 +209,9 @@ public class SimulationScreen extends Application {
 
                     if (!map.isRunning()) {
 
-                        Platform.runLater(this::showSimulationCompleteAlert);
+                        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+                        delay.setOnFinished(e -> Platform.runLater(this::showSimulationCompleteAlert));
+                        delay.play();
                         timeline.stop();
 
                     }
