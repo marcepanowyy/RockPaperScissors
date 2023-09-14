@@ -1,5 +1,5 @@
 package org.simulation.logic.map;
-import org.simulation.logic.elements.Element;
+import org.simulation.logic.element.Element;
 import org.simulation.logic.map.manager.*;
 import org.simulation.logic.utils.UniquePair;
 import org.simulation.logic.utils.Vector2D;

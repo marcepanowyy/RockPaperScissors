@@ -1,6 +1,6 @@
 package org.simulation.logic.map.manager;
 
-import org.simulation.logic.elements.Element;
+import org.simulation.logic.element.Element;
 import org.simulation.logic.map.WorldMap;
 
 // find the nearest element different from itself (e.g. Rock's opponent can be only Paper or Scissors)

@@ -1,6 +1,6 @@
 package org.simulation.logic.utils;
 
-import org.simulation.logic.elements.Element;
+import org.simulation.logic.element.Element;
 
 import java.util.Objects;
 

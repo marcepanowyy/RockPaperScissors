@@ -1,6 +1,6 @@
-package org.simulation.logic.elements;
+package org.simulation.logic.element;
 
-import org.simulation.logic.enums.ElementEnum;
+import org.simulation.logic.enuM.ElementEnum;
 import org.simulation.logic.utils.Vector2D;
 
 public abstract class Element {

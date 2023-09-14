@@ -1,4 +1,4 @@
-package org.simulation.logic.enums;
+package org.simulation.logic.enuM;
 
 public enum ElementEnum {
     ROCK,

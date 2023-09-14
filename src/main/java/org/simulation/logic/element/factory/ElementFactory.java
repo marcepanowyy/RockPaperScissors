@@ -1,10 +1,10 @@
-package org.simulation.logic.factory;
+package org.simulation.logic.element.factory;
 
-import org.simulation.logic.elements.Element;
-import org.simulation.logic.elements.Paper;
-import org.simulation.logic.elements.Rock;
-import org.simulation.logic.elements.Scissors;
-import org.simulation.logic.enums.ElementEnum;
+import org.simulation.logic.element.Element;
+import org.simulation.logic.element.Paper;
+import org.simulation.logic.element.Rock;
+import org.simulation.logic.element.Scissors;
+import org.simulation.logic.enuM.ElementEnum;
 import org.simulation.logic.utils.Vector2D;
 
 public class ElementFactory {

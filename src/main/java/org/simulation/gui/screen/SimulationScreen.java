@@ -16,8 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.simulation.logic.elements.Element;
-import org.simulation.logic.enums.ElementEnum;
+import org.simulation.logic.element.Element;
+import org.simulation.logic.enuM.ElementEnum;
 import org.simulation.logic.map.WorldMap;
 
 import java.util.*;

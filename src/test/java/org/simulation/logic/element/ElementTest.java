@@ -1,9 +1,9 @@
-package org.simulation.logic.elements;
+package org.simulation.logic.element;
 
 import org.simulation.logic.map.WorldMap;
 import org.simulation.logic.map.builder.WorldMapBuilder;
-import org.simulation.logic.enums.ElementEnum;
-import org.simulation.logic.factory.ElementFactory;
+import org.simulation.logic.enuM.ElementEnum;
+import org.simulation.logic.element.factory.ElementFactory;
 import org.simulation.logic.utils.Vector2D;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

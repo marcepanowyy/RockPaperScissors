@@ -1,8 +1,8 @@
 package org.simulation.logic.map.manager;
 
-import org.simulation.logic.elements.Element;
+import org.simulation.logic.element.Element;
 import org.simulation.logic.map.WorldMap;
-import org.simulation.logic.factory.ElementFactory;
+import org.simulation.logic.element.factory.ElementFactory;
 import org.simulation.logic.utils.UniquePair;
 
 public class HandleBattlesManager {
