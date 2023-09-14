@@ -2,6 +2,15 @@ plugins {
 
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'application'
+
+}
+
+
+application {
+
+    mainClassName = 'org.simulation.Main'
+    mainModule = 'RockPaperScissors.main'
 
 }
 

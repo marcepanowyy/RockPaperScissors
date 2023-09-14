@@ -1,14 +1,14 @@
 package org.simulation.logic.map.manager;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.simulation.logic.builder.WorldMapBuilder;
 import org.simulation.logic.element.Element;
 import org.simulation.logic.enums.ElementEnum;
 import org.simulation.logic.factory.ElementFactory;
 import org.simulation.logic.map.WorldMap;
-import org.simulation.logic.builder.WorldMapBuilder;
 import org.simulation.logic.utils.Vector2D;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

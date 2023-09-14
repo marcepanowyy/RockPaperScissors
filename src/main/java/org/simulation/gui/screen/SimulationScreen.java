@@ -9,7 +9,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -28,7 +31,7 @@ public class SimulationScreen extends Application {
 
     private Stage primaryStage;
 
-    final double keyFrameTimestamp = 0.2;
+    final double keyFrameTimestamp = 0.1;
 
     private final int cellSize = 4;
 

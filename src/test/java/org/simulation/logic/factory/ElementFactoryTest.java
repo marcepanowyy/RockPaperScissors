@@ -1,10 +1,10 @@
 package org.simulation.logic.factory;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.simulation.logic.element.Element;
 import org.simulation.logic.enums.ElementEnum;
 import org.simulation.logic.utils.Vector2D;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

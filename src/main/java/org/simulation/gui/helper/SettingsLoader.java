@@ -53,7 +53,7 @@ public class SettingsLoader {
                 "speed",
                 "Movement Speed",
                 "Set the speed at which elements move",
-                "0.15",
+                "0.1",
                 loadImage("speed.png")
 
         );
@@ -62,7 +62,7 @@ public class SettingsLoader {
                 "rock",
                 "Rock Elements",
                 "Specify the quantity of ROCK items on the map",
-                "10",
+                "8",
                 loadImage("rock.png")
 
         );
@@ -71,7 +71,7 @@ public class SettingsLoader {
                 "paper",
                 "Paper Elements",
                 "Indicate the quantity of PAPER items on the map",
-                "10",
+                "8",
                 loadImage("paper.png")
 
         );
@@ -80,7 +80,7 @@ public class SettingsLoader {
                 "scissors",
                 "Scissors Elements",
                 "Decide how many SCISSORS items are on the map",
-                "10",
+                "8",
                 loadImage("scissors.png")
 
         );

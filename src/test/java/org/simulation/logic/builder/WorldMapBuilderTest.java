@@ -1,8 +1,7 @@
 package org.simulation.logic.builder;
 
-import org.simulation.logic.builder.WorldMapBuilder;
-import org.simulation.logic.map.WorldMap;
 import org.junit.jupiter.api.Test;
+import org.simulation.logic.map.WorldMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
