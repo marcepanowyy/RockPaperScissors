@@ -31,7 +31,7 @@ public class SimulationScreen extends Application {
 
     private Stage primaryStage;
 
-    final double keyFrameTimestamp = 0.1;
+    final double keyFrameTimestamp = 0.45;
 
     private final int cellSize = 4;
 

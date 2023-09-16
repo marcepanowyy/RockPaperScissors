@@ -309,7 +309,7 @@ public class SettingsScreen extends Application {
         return switch (paramName) {
 
             case "rock", "paper", "scissors" -> 0;
-            case "speed" -> 0.1;
+            case "speed" -> 0.05;
             case "range" -> 0.5;
             case "size" -> 5;
             default -> Double.MIN_VALUE;

@@ -23,7 +23,7 @@ public class FindOpponentsManager {
 
     private void findOpponent(Element sourceElement) {
 
-        if (sourceElement.getOpponent() == null || worldMap.getRemovedRoundElements().containsKey(sourceElement.getOpponent())) {
+//        if (sourceElement.getOpponent() == null || worldMap.getRemovedRoundElements().containsKey(sourceElement.getOpponent())) {
 
             Element closestOpponent = null;
             double shortestDistance = Double.MAX_VALUE;
@@ -45,6 +45,6 @@ public class FindOpponentsManager {
             sourceElement.setOpponent(closestOpponent);
 
         }
-    }
+//    }
 
 }

@@ -2,8 +2,8 @@
 
 This Java project is an engaging Rock-Paper-Scissors game simulator. The simulator portrays duels between three elements - paper, rock, and scissors. When two different elements encounter each other, a battle ensues (as we know, scissors beat paper, paper beats rock, rock beats scissors), with the losing element transforming into the winning one. They then seek out the nearest opponents, different from themselves to engage in combat. The simulation concludes when only elements of one type remain on the map.
 
-To see the simulator in action, click on [this link](https://drive.google.com/file/d/1tGdLmZ3mFT72oTAI2rPaemkqp0CPsWB6/view?usp=sharing). <br>
-To see the simulator's GUI, click on [this link](https://drive.google.com/file/d/11U2LB65hPKLXJM9Ry15EIujiOHOz0R51/view?usp=sharing).
+To see the simulator's GUI, click on [this link](https://drive.google.com/file/d/11U2LB65hPKLXJM9Ry15EIujiOHOz0R51/view?usp=sharing). <br>
+To see the simulator in action, click on [this link](https://drive.google.com/file/d/1VrODrCVybIhVve1Ax29rPP04iZp6iqNx/view?usp=sharing). 
 
 ## Key Features:
 
